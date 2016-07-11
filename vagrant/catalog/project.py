@@ -1,16 +1,16 @@
 """ 
-	Project.py
+    Project.py
 
-	* Programmed by Guillaume Simler
-	* Main program of this application: 
-		- the web server is set up
-		- the methods (GET/POST) are defined
+    * Programmed by Guillaume Simler
+    * Main program of this application: 
+        - the web server is set up
+        - the methods (GET/POST) are defined
 
-	More information in the comments and/or README File
+    More information in the comments and/or README File
 """
 
 """
-	I. Module imports
+    I. Module imports
 """
 
 # 1. Flask: manages the templates
@@ -42,7 +42,7 @@ import requests
 
 
 """
-	II. Initizalization
+    II. Initizalization
 """
 
 # 1. Define app
@@ -60,20 +60,28 @@ app = Flask(__name__)
 
 # !!!! To be updated  once defined!!!!!
 #CLIENT_ID = json.loads(
-#  	open('client_secrets.json', 'r').read())['web']['client_id']
+#   open('client_secrets.json', 'r').read())['web']['client_id']
 
 
 """
-	III. Main program
+    III. Main program
 """
+FakeDB_ART = [{'id': 1, 'type': 'Bronze', 'description': 'A classic material used by mankind since the age of the same name'},
+              {'id': 2, 'type': 'Paintings', 'description': 'The classic collection piece'}]
 
 @app.route('/')
 @app.route('/art')
 def showArtCatalog():
-	return render_template('art.html')
+    return render_template('art.html', arts = FakeDB_ART)
+
+@app.route('/art/<int:art_id>/')
+@app.route('/art/<int:art_id>/collection:')
+def showCollectionItems(art_id):
+    return render_template('items.html')
+
 
 """
-	IV. Webserver
+    IV. Webserver
 """
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

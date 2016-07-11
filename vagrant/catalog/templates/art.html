@@ -2,7 +2,19 @@
 
 {% block content %}
 
-	<h1>If you see me, the server is running</h1>
+	{% for art in arts %}
+		<article>
+			<div class="article_left">
+				<h2><a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a></h2>
+				<p>
+					{{art.description}}
+				</p>
+			</div>
 
+			<div class="article_right">
+				<img class="article_img" src="{{ url_for('static', filename='images/img-1.jpg')}}">
+			</div>
+		</article>	
+	{% endfor %}
 
 {% endblock %}
