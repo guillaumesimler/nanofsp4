@@ -31,10 +31,10 @@ The app uses the following ressources:
 Data structure
 ----
 
-## Database
+#### Database
 
 
-## Tables
+#### Tables
 
 
 How to use
