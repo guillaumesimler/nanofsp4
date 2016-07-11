@@ -24,6 +24,9 @@ The app uses the following ressources:
 	- [Flask](http://flask.pocoo.org/) handling the templates and most of the methods
 	- [SQLalchemy](http://www.sqlalchemy.org/) managing the database
 	- [SQLite](https://www.sqlite.org/) the database used there
+	- [oauth2client](https://github.com/google/oauth2client), the library enabling the use of [Oauth2](http://oauth.net/2/)
+	- Helper modules, such as [random](https://docs.python.org/2/library/random.html), [string](https://docs.python.org/2/library/string.html), [json](https://docs.python.org/2.7/library/json.html), 
+	- HTTP helper modules, such as [Requests](http://docs.python-requests.org/en/master/) and [httplib2](https://pypi.python.org/pypi/httplib2)
 * **Frontend**
 
 
