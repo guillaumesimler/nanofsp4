@@ -40,6 +40,9 @@ import httplib2
 import json
 import requests
 
+# 5. Security
+
+from security import escape
 
 """
     II. Initizalization
