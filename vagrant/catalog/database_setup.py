@@ -147,7 +147,7 @@ class Picture(Base):
         return {
            'id'           : self.id,
            'url'          : self.price,
-           'photographer' : self.photographer
+           'photographer' : self.photographer,
            'artwork_id'   : self.artwork_id,
         }
 
