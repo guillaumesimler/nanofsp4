@@ -134,6 +134,7 @@ class Picture(Base):
 
 
     url = Column(String(80), nullable = False)
+    photographer = Column(String(200))
     id = Column(Integer, primary_key = True)
     
     artwork_id = Column(Integer, ForeignKey('artwork.id'))
@@ -146,6 +147,7 @@ class Picture(Base):
         return {
            'id'           : self.id,
            'url'          : self.price,
+           'photographer' : self.photographer
            'artwork_id'   : self.artwork_id,
         }
 
