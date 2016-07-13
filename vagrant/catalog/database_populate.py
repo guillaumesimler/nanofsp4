@@ -110,6 +110,204 @@ for artist in artists:
         session.add(insert_artist)
         print "The artist %s will be added to the database" % artist['name']
 
+# 4. Artwork
+
+artworks = [{'name'        : 'Albatros sur une vague',
+            'description'  : 'Albatross on his vawe, quite a usual ArtDeco motive, with green patina',
+            'purchase_year': '1989',
+            'size'         : '',
+            'weight'       : '17 kg',
+            'user_id'      : 1,
+            'art_id'       : 1,
+            'artist_id'    : 4},
+
+           {'name'         : 'Cachalot/Potwal',
+            'description'  : 'Unusual motive as aquatic animals are quite difficult to dispict (they are not bound to gravity to stand, the scultpure would need it). Commissioned piece',
+            'purchase_year': '2014',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 1,
+            'artist_id'    : 1},
+
+            {'name'        : 'Dromedary',
+            'description'  : "Looks like a old standard by Duke Ellington sounds,  majestic, smooth, in black patina. Was exhibited in Elke's yard",
+            'purchase_year': '2012',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 1,
+            'artist_id'    : 1},
+
+            {'name'        : 'Rhinoceros',
+            'description'  : "Powerful, calm. It's a second cast (the first being owned by the artist's husband), black patina (applied after the purchase)",
+            'purchase_year': '2011',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 1,
+            'artist_id'    : 1},
+
+            {'name'        : 'no title (Egon Shiele)',
+            'description'  : "A present by my parents, knowing my love for Egon Schiele, which must have been studied by the author at that time",
+            'purchase_year': '2008',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 3},
+
+            {'name'        : 'no title (family fight)',
+            'description'  : "The purchase of this painting nearly ended in a family fight as my father and I dearly wanted it. My mother arbitrated in my favour. Yet it needs to remain in my office which prompts my father to offer it 'asylum'",
+            'purchase_year': '2010',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 3},
+
+            {'name'        : 'Queen Mary II',
+            'description'  : "A present by my parents for my flat in Nantes, the namesake had left the drydocks of St Nazaire 2 years before",
+            'purchase_year': '2006',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 2},
+
+            {'name'        : 'Sun',
+            'description'  : "One early picture I purchased, works well in pair with 'Window (red)'",
+            'purchase_year': '1998',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 2},
+           ]
+
+for artwork in artworks:
+
+    check_artwork = session.query(Artwork).filter_by(name = artwork['name']).first()
+
+    if check_artwork: 
+        print "This artist %s seems to be already in the database." % artwork['name']
+        print "Please check your input and use the front end" 
+    else:
+        insert_artwork= Artwork(name = escape(artwork['name']), 
+                             description= escape(artwork['description']),
+                             purchase_year = escape(artwork['purchase_year']),
+                             size = escape(artwork['size']),
+                             weight = escape(artwork['weight']),
+                             user_id = artwork['user_id'],
+                             art_id = artwork['art_id'],
+                             artist_id = artwork['artist_id']
+                             )
+        session.add(insert_artwork)
+        print "The artist %s will be added to the database" % artwork['name']
+
+# 5. Pictures
+
+pictures = [
+            {'filename'     : '1-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '1'},
+
+            {'filename'     : '1-2.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '1'},
+
+            {'filename'     : '1-3.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '1'},
+
+            {'filename'     : '1-4.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '1'},
+
+            {'filename'     : '1-5.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '1'},
+
+            {'filename'     : '3-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '3'},
+
+            {'filename'     : '3-2.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '3'},
+
+            {'filename'     : '3-3.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '3'},
+
+            {'filename'     : '3-4.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '3'},
+
+            {'filename'     : '3-5.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '3'},
+
+            {'filename'     : '3-6.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '3'},
+
+            {'filename'     : '4-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '4'},
+
+            {'filename'     : '4-2.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '4'},
+
+            {'filename'     : '4-3.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '4'},
+
+            {'filename'     : '4-4.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '4'},
+
+            {'filename'     : '4-5.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '4'},
+
+            {'filename'     : '4-6.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '4'},
+
+            {'filename'     : '5-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '5'},
+
+            {'filename'     : '6-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '6'},
+
+            {'filename'     : '7-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '7'},
+
+            {'filename'     : '8-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '8'}]
+
+for picture in pictures:
+    
+    check_picture = session.query(Picture).filter_by(filename = picture['filename']).first()
+
+    if check_picture: 
+        print "This file, %s, seems to be already in the database." % picture['filename']
+        print "Please check your input and use the front end" 
+    else:
+        insert_picture= Picture(filename = picture['filename'],
+                                photographer = picture['photographer'],
+                                artwork_id = picture['artwork_id']
+                             )
+        session.add(insert_picture)
+        print "The file, %s, will be added to the database" % picture['filename']
+
+
 print "Committing..."
 session.commit()
 print "Imports committed"

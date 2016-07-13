@@ -97,7 +97,7 @@ class Artwork(Base):
     description = Column(Text)
     purchase_year = Column(String(4))
     size = Column(String(20))
-    weigh = Column(String(20))
+    weight = Column(String(20))
     url = Column(String(80))
 
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -123,7 +123,6 @@ class Artwork(Base):
            'user_id'      : self.user_id,
            'art_id'       : self.art_id,
            'artist_id'    : self.artist_id,
-           'art_id'       : self.art_id,
         }
 
 class Picture(Base):
@@ -133,7 +132,7 @@ class Picture(Base):
     __tablename__ = 'picture'
 
 
-    url = Column(String(80), nullable = False)
+    filename = Column(String(80), nullable = False)
     photographer = Column(String(200))
     id = Column(Integer, primary_key = True)
     
@@ -146,7 +145,7 @@ class Picture(Base):
         """Return object data in easily serializeable format"""
         return {
            'id'           : self.id,
-           'url'          : self.price,
+           'filename'     : self.filename,
            'photographer' : self.photographer,
            'artwork_id'   : self.artwork_id,
         }
