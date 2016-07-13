@@ -25,7 +25,7 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 
 # !!!! To be updated  once defined!!!!!
-# from database_setup import Base, Restaurant, MenuItem, User 
+from database_setup import Base, Art, Artist, Artwork, Picture, User 
 
 # 3. oauth2client: Manages the authorization &authentication processes 
 
@@ -53,11 +53,11 @@ app = Flask(__name__)
 
 # 2. Connect to Database and create database session
 
-# engine = create_engine('sqlite:///restaurantmenu.db')
-# Base.metadata.bind = engine
+engine = create_engine('sqlite:///artcatalog.db')
+Base.metadata.bind = engine
 
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 # 3. Load Client Secret File (Google)
 

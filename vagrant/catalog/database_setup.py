@@ -2,6 +2,7 @@
     Database_setup.py
 
     * programmed by Guillaume Simler
+    * sets up the database
 
 
 """
@@ -82,7 +83,7 @@ class Artist(Base):
            'information'  : self.information,
            'url'          : self.price,
            'user_id'      : self.user_id,
-       }
+        }
 
 class Artwork(Base):
     """
@@ -111,8 +112,8 @@ class Artwork(Base):
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
+        """Return object data in easily serializeable format"""
+        return {
            'name'         : self.name,
            'id'           : self.id,
            'description'  : self.description,
@@ -123,7 +124,7 @@ class Artwork(Base):
            'art_id'       : self.art_id,
            'artist_id'    : self.artist_id,
            'art_id'       : self.art_id,
-       }
+        }
 
 class Picture(Base):
     """
@@ -141,12 +142,12 @@ class Picture(Base):
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
+        """Return object data in easily serializeable format"""
+        return {
            'id'           : self.id,
            'url'          : self.price,
            'artwork_id'   : self.artwork_id,
-       }
+        }
 
 """
     III. Database setup
