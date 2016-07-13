@@ -21,10 +21,9 @@ from flask import session as login_session
 
 # 2. SQL Alchemy: manages the database
 
-from sqlalchemy import create_engine, asc
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# !!!! To be updated  once defined!!!!!
 from database_setup import Base, Art, Artist, Artwork, Picture, User 
 
 # 3. oauth2client: Manages the authorization &authentication processes 

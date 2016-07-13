@@ -18,6 +18,11 @@ import bleach
 """
 
 def escape(value):
+    """
+        extends the classic escaping also to the apostrophe
+
+        @Reviewer: Do you please have a better way?
+    """
     value = bleach.clean(value)
 
     value = value.replace("'", "&#39;")
