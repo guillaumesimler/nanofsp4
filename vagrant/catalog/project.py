@@ -72,7 +72,15 @@ session = DBSession()
 @app.route('/')
 @app.route('/art')
 def showArtCatalog():
-    return render_template('art.html', arts = FakeDB_ART)
+    # get data
+    arts = session.query(Art).all()
+    pictures = session.query(Picture).all()
+
+    pictures = getFrontImage(pictures)
+
+    print pictures[0].filename
+
+    return render_template('art.html', arts = arts, pictures = pictures)
 
 @app.route('/art/<int:art_id>/')
 @app.route('/art/<int:art_id>/collection:')
@@ -81,7 +89,26 @@ def showCollectionItems(art_id):
 
 
 """
-    IV. Webserver
+    IV. Helper functions
+"""
+
+def getFrontImage(list):
+    """
+        Returns two random pictures from a list
+    """
+    n = len(list) - 1
+
+    r1 = random.randint(0, n)
+
+    # Make sur the second r2
+    r2 = r1
+    while r2 == r1 and n > 0:
+        r2 = random.randint(0, n)
+
+    return [list[r1], list[r2]]
+
+"""
+    V. Webserver
 """
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
