@@ -81,7 +81,7 @@ class Artist(Base):
            'name'         : self.name,
            'id'           : self.id,
            'information'  : self.information,
-           'url'          : self.price,
+           'url'          : self.url,
            'user_id'      : self.user_id,
         }
 

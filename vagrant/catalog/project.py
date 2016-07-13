@@ -68,8 +68,6 @@ session = DBSession()
 """
     III. Main program
 """
-FakeDB_ART = [{'id': 1, 'type': 'Bronze', 'description': 'A classic material used by mankind since the age of the same name'},
-              {'id': 2, 'type': 'Paintings', 'description': 'The classic collection piece'}]
 
 @app.route('/')
 @app.route('/art')
