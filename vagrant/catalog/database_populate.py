@@ -183,6 +183,42 @@ artworks = [{'name'        : 'Albatros sur une vague',
             'user_id'      : 1,
             'art_id'       : 2,
             'artist_id'    : 2},
+
+            {'name'        : 'no title (small yellow head)',
+            'description'  : "A present by my sister",
+            'purchase_year': '2008',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 3},
+
+            {'name'        : 'no title (woman in red)',
+            'description'  : "A present by my sister",
+            'purchase_year': '2010',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 3},
+
+            {'name'        : 'Windows (red)',
+            'description'  : "One early picture I purchased, works well in pair with 'Sun'",
+            'purchase_year': '1998',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 2},
+
+            {'name'        : 'Japanase blue dyptic',
+            'description'  : "A dyptic from Hendrick Bobock. Refreshing, simple always a candidate to be kickout. Yet still on the walls",
+            'purchase_year': '1999',
+            'size'         : '',
+            'weight'       : '',
+            'user_id'      : 1,
+            'art_id'       : 2,
+            'artist_id'    : 2},
            ]
 
 for artwork in artworks:
@@ -290,7 +326,27 @@ pictures = [
 
             {'filename'     : '8-1.jpg',
              'photographer' : 'Andre Wirsig',
-             'artwork_id'   : '8'}]
+             'artwork_id'   : '8'},
+
+            {'filename'     : '9-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '9'},
+
+            {'filename'     : '10-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '10'},
+
+            {'filename'     : '11-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '11'},
+
+            {'filename'     : '12-1.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '12'},
+
+            {'filename'     : '12-2.jpg',
+             'photographer' : 'Andre Wirsig',
+             'artwork_id'   : '12'}]
 
 for picture in pictures:
     
