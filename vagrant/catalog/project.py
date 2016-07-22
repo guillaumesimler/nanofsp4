@@ -83,9 +83,10 @@ def showArtCatalog():
     return render_template('art.html', arts = arts, pictures = pictures)
 
 @app.route('/art/<int:art_id>/')
-@app.route('/art/<int:art_id>/collection:')
+@app.route('/art/<int:art_id>/collection')
 def showCollectionItems(art_id):
-    return render_template('items.html')
+    arts = session.query(Art).all()
+    return render_template('items.html', arts = arts, id = art_id)
 
 
 """

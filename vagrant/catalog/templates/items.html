@@ -1,7 +1,33 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
+	
+	<div class = "items_left">
+		<!-- Introducing the selected art element -->
+		{% for art in arts %}
+			{% if art.id == id %}
 
-	<div>A list of articles </div>
+				<h2>{{art.type}}</h2>
+				<p>{{art.description}}</p>
+
+			{% endif %}
+		{% endfor %}
+
+		<a href="#">Edit this art category</a>
+		<hr>
+
+		<h3>Other Category in the Collection </h3>
+		<ul>
+			{% for art in arts %}
+				{% if art.id != id %}
+					<li>
+						<a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a>
+					</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+
+		<a href="#">Add an art category</a>
+	</div>
 
 {% endblock %}
