@@ -2,11 +2,11 @@
 
 {% block content %}
 
-	
+	<h2>Discipline</h2>
 	{% for art in arts %}
-		<article>
+		<article class="article_body">
 			<div class="article_left">
-				<h2><a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a></h2>
+				<h3><a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a></h3>
 				<p>
 					{{art.description}}
 				</p>
@@ -17,4 +17,17 @@
 			</div>
 		</article>	
 	{% endfor %}
+
+	<hr>
+
+	<h2>Artists</h2>
+
+	<ul>
+		{%for artist in artists %}
+			<li>
+				<a href="{{url_for('showArtists', artist_id = artist.id)}}">{{artist.name}}</a>
+			</li>
+		{% endfor %}
+	</ul>
+
 {% endblock %}

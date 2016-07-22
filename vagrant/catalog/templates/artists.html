@@ -1,0 +1,34 @@
+{% extends "generic_header.html" %}
+
+{% block content %}
+
+	{% for artist in artists %}
+		{% if artist_id == artist.id %}
+			
+			<h2>{{artist.name}}</h2>
+
+			{% if artist.information %}
+				<p>{{artist.information}}</p>
+			{% endif %}
+
+			{% if artist.url %}
+				<a href="{{artist.url}}" target="_blank">more information</a>
+			{% endif %}
+			
+		{% endif %}
+	{% endfor %}
+	<p><a href="#">Edit this entry</a></p>
+
+	<h2>Other Artists</h2>
+
+	<ul>
+		{%for artist in artists %}
+        	{% if artist_id != artist.id %}
+			<li>
+				<a href="{{url_for('showArtists', artist_id = artist.id)}}">{{artist.name}}</a>
+			</li>
+			{% endif%}
+		{% endfor %}
+	</ul>
+	<p><a href="#">Add a new artist</a></p>
+{% endblock %}

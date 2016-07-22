@@ -2,10 +2,19 @@ header {
 	background-color: yellow;
 }
 
+
+/* Front page*/
+
+.article_body {
+	display: flex;
+}
+
+.article_left {
+	width: 40% 
+}
 .article_img {
 	max-height: 30vh;
 }
-
 /* Items */
 
 .items_body {

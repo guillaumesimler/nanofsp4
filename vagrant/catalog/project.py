@@ -75,12 +75,11 @@ def showArtCatalog():
     # get data
     arts = session.query(Art).all()
     pictures = session.query(Picture).all()
-
     pictures = getFrontImage(pictures)
 
-    print pictures[0].filename
+    artists = session.query(Artist).all() 
 
-    return render_template('art.html', arts = arts, pictures = pictures)
+    return render_template('art.html', arts = arts, pictures = pictures, artists = artists)
 
 @app.route('/art/<int:art_id>/')
 @app.route('/art/<int:art_id>/collection')
@@ -88,6 +87,13 @@ def showCollectionItems(art_id):
     arts = session.query(Art).all()
     artworks = session.query(Artwork).filter_by(art_id = art_id).all()
     return render_template('items.html', arts = arts, id = art_id, artworks = artworks)
+
+
+@app.route('/art/artist/<int:artist_id>/')
+def showArtists(artist_id):
+    artists = session.query(Artist).all()
+
+    return render_template('artists.html', artists = artists, artist_id = artist_id)
 
 
 """
