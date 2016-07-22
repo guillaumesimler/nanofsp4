@@ -98,7 +98,7 @@ class Artwork(Base):
     purchase_year = Column(String(4))
     size = Column(String(20))
     weight = Column(String(20))
-    url = Column(String(80))
+    purchase_prize = Column(String(80))
 
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
@@ -114,15 +114,16 @@ class Artwork(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-           'name'         : self.name,
-           'id'           : self.id,
-           'description'  : self.description,
-           'purchase_year': self.purchase_year,
-           'size'         : self.size,
-           'weight'       : self.weight,
-           'user_id'      : self.user_id,
-           'art_id'       : self.art_id,
-           'artist_id'    : self.artist_id,
+           'name'          : self.name,
+           'id'            : self.id,
+           'description'   : self.description,
+           'purchase_year' : self.purchase_year,
+           'size'          : self.size,
+           'weight'        : self.weight,
+           'purchase_prize': self.purchase_prize,
+           'user_id'       : self.user_id,
+           'art_id'        : self.art_id,
+           'artist_id'     : self.artist_id,
         }
 
 class Picture(Base):
@@ -145,7 +146,7 @@ class Picture(Base):
         """Return object data in easily serializeable format"""
         return {
            'id'           : self.id,
-           'filename'     : self.filename,
+           'filename'     : self.price,
            'photographer' : self.photographer,
            'artwork_id'   : self.artwork_id,
         }

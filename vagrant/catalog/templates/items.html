@@ -35,7 +35,7 @@
 			{% for artwork in artworks %}
 				<div class = "items_description">
 					<div class = "items_text">
-						<h5><a href="#">{{ artwork.name }}</a></h5>
+						<h5><a href="{{url_for('showArtworks', artwork_id = artwork.id)}}">{{ artwork.name }}</a></h5>
 						<p>{{ artwork.description}}<p>
 					</div>
 					<div class = "items_thumbmail">

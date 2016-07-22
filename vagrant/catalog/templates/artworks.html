@@ -1,0 +1,34 @@
+{% extends "generic_header.html" %}
+
+{% block content %}
+
+	<h2>{{artwork.name}}</h2>
+
+	<p> {{artwork.description}} </p>
+
+	<ul>
+		{% if artwork.purchase_year %}
+			<li>Purchase year: {{artwork.purchase_year}}</li>
+		{% endif %}
+
+		{% if artwork.size %}
+			<li>Size: {{artwork.size}}</li>
+		{% endif %}
+
+		{% if artwork.weight %}
+			<li>Weight: {{artwork.weight}}</li>
+		{% endif %}
+
+
+		{% if artwork.purchase_prize %}
+			<li>Purchase prize: {{artwork.purchase_prize}}</li>
+		{% endif %}
+
+	</ul>
+
+
+	<h3>Pictures</h3>
+	{% for picture in pictures%}
+			<img src="{{url_for('static', filename = 'images/'+ picture.filename)}}" alt="A picture of the artwork, {{artwork.name}}, by {{picture.photographer}}">
+	{% endfor %}
+{% endblock %}

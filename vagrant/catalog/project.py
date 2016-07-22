@@ -95,6 +95,13 @@ def showArtists(artist_id):
 
     return render_template('artists.html', artists = artists, artist_id = artist_id)
 
+@app.route('/art/artworks/<int:artwork_id>')
+def showArtworks(artwork_id):
+    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
+    pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
+  
+
+    return render_template('artworks.html', artwork = artwork, pictures = pictures)
 
 """
     IV. Helper functions
