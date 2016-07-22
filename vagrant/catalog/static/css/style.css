@@ -5,3 +5,33 @@ header {
 .article_img {
 	max-height: 30vh;
 }
+
+/* Items */
+
+.items_body {
+	display: flex;
+}
+.items_left {
+	width: 40%;
+	padding-right: 15px;
+}
+
+.items_right {
+	width: 60%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.items_description {
+	width : 45% ;
+	display: flex;
+	margin: 10px;
+}
+
+
+
+.items_thumbmail {
+	width: 80px;
+	height: 80px;
+	position: center;
+}

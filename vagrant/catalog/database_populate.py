@@ -113,7 +113,7 @@ for artist in artists:
 # 4. Artwork
 
 artworks = [{'name'        : 'Albatros sur une vague',
-            'description'  : 'Albatross on his vawe, quite a usual ArtDeco motive, with green patina',
+            'description'  : 'Albatross on his wave, quite a usual Artdeco motive, with green patina',
             'purchase_year': '1989',
             'size'         : '',
             'weight'       : '17 kg',

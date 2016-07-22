@@ -1,33 +1,51 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
-	
-	<div class = "items_left">
-		<!-- Introducing the selected art element -->
-		{% for art in arts %}
-			{% if art.id == id %}
-
-				<h2>{{art.type}}</h2>
-				<p>{{art.description}}</p>
-
-			{% endif %}
-		{% endfor %}
-
-		<a href="#">Edit this art category</a>
-		<hr>
-
-		<h3>Other Category in the Collection </h3>
-		<ul>
+	<div class="items_body">	
+		<div class = "items_left">
+			<!-- Introducing the selected art element -->
 			{% for art in arts %}
-				{% if art.id != id %}
-					<li>
-						<a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a>
-					</li>
+				{% if art.id == id %}
+
+					<h2>{{art.type}}</h2>
+					<p>{{art.description}}</p>
+
 				{% endif %}
 			{% endfor %}
-		</ul>
 
-		<a href="#">Add an art category</a>
+			<a href="#">Edit this art category</a>
+			<hr>
+
+			<h3>Other Category in the Collection </h3>
+			<ul>
+				{% for art in arts %}
+					{% if art.id != id %}
+						<li>
+							<a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+
+			<a href="#">Add an art category</a>
+		</div>
+
+		<div class = "items_right">
+
+			{% for artwork in artworks %}
+				<div class = "items_description">
+					<div class = "items_text">
+						<h5><a href="#">{{ artwork.name }}</a></h5>
+						<p>{{ artwork.description}}<p>
+					</div>
+					<div class = "items_thumbmail">
+						<img src="http://placehold.it/80x80">
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
 	</div>
+
 
 {% endblock %}

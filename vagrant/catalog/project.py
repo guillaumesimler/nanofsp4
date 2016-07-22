@@ -86,7 +86,8 @@ def showArtCatalog():
 @app.route('/art/<int:art_id>/collection')
 def showCollectionItems(art_id):
     arts = session.query(Art).all()
-    return render_template('items.html', arts = arts, id = art_id)
+    artworks = session.query(Artwork).filter_by(art_id = art_id).all()
+    return render_template('items.html', arts = arts, id = art_id, artworks = artworks)
 
 
 """
