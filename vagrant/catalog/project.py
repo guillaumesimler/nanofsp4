@@ -71,6 +71,8 @@ session = DBSession()
 
 @app.route('/')
 @app.route('/art')
+
+# Display/read elements
 def showArtCatalog():
     # get data
     arts = session.query(Art).all()
@@ -99,9 +101,31 @@ def showArtists(artist_id):
 def showArtworks(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
-  
-
+ 
     return render_template('artworks.html', artwork = artwork, pictures = pictures)
+
+# Edit/Update elements
+
+@app.route('/art/<int:art_id>/edit', methods=['GET', 'POST'])
+def editArt(art_id):
+    art = session.query(Art).filter_by(id = art_id).one()
+
+    if request.method == 'POST':
+        edited_type = request.form['type']
+        edited_description = request.form['description']
+
+        art.type = edited_type
+        art.description = edited_description
+
+        session.commit()
+        print "Entry about %s was updated" %art.type
+
+        return redirect(url_for('showCollectionItems', art_id = art_id))
+    else:      
+        return render_template('art_edit.html', art = art)
+
+
+
 
 """
     IV. Helper functions

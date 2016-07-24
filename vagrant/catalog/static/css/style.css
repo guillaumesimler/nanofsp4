@@ -1,3 +1,7 @@
+body {
+	font-family: Helvetica;
+}
+
 header {
 	background-color: yellow;
 }
@@ -38,9 +42,15 @@ header {
 }
 
 
-
 .items_thumbmail {
 	width: 80px;
 	height: 80px;
 	position: center;
 }
+
+/* EDIT*/
+
+.edit_textarea {
+	width: 400px;
+	height: 250px;
+} 

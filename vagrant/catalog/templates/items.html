@@ -10,11 +10,14 @@
 					<h2>{{art.type}}</h2>
 					<p>{{art.description}}</p>
 
+				<a href="{{url_for('editArt', art_id = art.id)}}">Edit this art category</a>
+				
+				<hr>
+
 				{% endif %}
 			{% endfor %}
 
-			<a href="#">Edit this art category</a>
-			<hr>
+			
 
 			<h3>Other Category in the Collection </h3>
 			<ul>

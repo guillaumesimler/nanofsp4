@@ -46,6 +46,9 @@ class Art(Base):
     type = Column(String(80), nullable=False)
     description = Column(Text)
 
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
     # no user input here, as it is such big a change
     # that it should not been driven by a front-end user
 
@@ -56,7 +59,7 @@ class Art(Base):
            'type'             : self.type,
            'id'               : self.id,
            'description'      : self.description,
-       }
+           'user_id'          : self.user_id       }
  
 class Artist(Base):
     """

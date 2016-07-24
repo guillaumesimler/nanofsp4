@@ -1,0 +1,23 @@
+{% extends "generic_header.html" %}
+
+{% block content %}
+
+	<h2>Edit the disciplines</h2>
+
+	<form method="POST">
+		<label for="type">Discipline</label>
+		<br>
+		<input name="type" type="text" value="{{art.type}}">
+
+		<br>
+		<label for="description">Description</label>
+		<br>
+		<textarea class="edit_textarea" name="description">{{art.description}}</textarea>
+
+		<br>
+		<input type="Submit">
+	</form>
+
+
+
+{% endblock %}

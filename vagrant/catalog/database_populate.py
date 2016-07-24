@@ -66,7 +66,9 @@ for art in arts:
         print "The art (discipline) %s is already in the database." % art['type']
         print "Please check your input and use the front end" 
     else:
-        insert_art = Art(type = escape(art['type']), description= escape(art['description']))
+        insert_art = Art(type = escape(art['type']), 
+                         description= escape(art['description']),
+                         user_id = 1)
         session.add(insert_art)
         print "The art (discipline) %s will be added to the database" %art['type']
 
