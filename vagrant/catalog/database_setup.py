@@ -59,7 +59,8 @@ class Art(Base):
            'type'             : self.type,
            'id'               : self.id,
            'description'      : self.description,
-           'user_id'          : self.user_id       }
+           'user_id'          : self.user_id
+       }
  
 class Artist(Base):
     """

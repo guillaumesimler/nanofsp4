@@ -26,9 +26,16 @@
 
 	</ul>
 
+	<br>
+	<a href="{{url_for('editArtwork', artwork_id = artwork_id)}}">Edit this entry</a>
+	<br>
 
 	<h3>Pictures</h3>
+
+	<div class="artworks_cameraroll">
 	{% for picture in pictures%}
-			<img src="{{url_for('static', filename = 'images/'+ picture.filename)}}" alt="A picture of the artwork, {{artwork.name}}, by {{picture.photographer}}">
+			<img class="artworks_image" src="{{url_for('static', filename = 'images/'+ picture.filename)}}" alt="A picture of the artwork, {{artwork.name}}, by {{picture.photographer}}">
 	{% endfor %}
-{% endblock %}
+
+</div>
+{% endblock %}vagrqa

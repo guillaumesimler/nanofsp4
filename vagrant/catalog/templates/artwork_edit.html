@@ -1,0 +1,69 @@
+{% extends "generic_header.html" %}
+
+{% block content %}
+
+	<h2>Edit the artwork: {{artwork.name}}</h2>
+
+	<form method="POST">
+		<label for="type">Name</label>
+		<br>
+		<input name="type" type="text" value="{{artwork.name}}">
+
+		<br>
+		<label for="description">Description</label>
+		<br>
+		<textarea class="edit_textarea" name="description">{{artwork.description}}</textarea>
+		<br>
+
+		<br>
+		<label for="purchase_year">Year of purchase</label>
+		<br>
+		<input name="purchase_year" type="text" value="{{artwork.purchase_year}}">
+		<br>
+
+		<br>
+		<label for="size">Size (width & heigth & depth - if suitable)</label>
+		<br>
+		<input name="size" type="text" value="{{artwork.size}}">
+		<br>
+		
+		<br>
+		<label for="sweight">Weight (in kg - if suitable)</label>
+		<br>
+		<input name="weighte" type="text" value="{{artwork.weight}}">
+		<br>
+
+		<br>
+		<label for="purchase_prize">Purchase prize</label>
+		<br>
+		<input name="type" type="text" value="{{artwork.purchase_prize}}">
+		<br>
+
+		<br>
+		<label for="art_id">Discipline:</label>
+		<br>
+		<select name="art_id">
+			{% for art in arts %}
+				<option name="{{art.id}}">{{art.type}}</option>
+			{% endfor %}
+		</select>
+		<br>
+
+		<br>
+		<label for="artist_id">Artist:</label>
+		<br>
+		<select name="artist_id">
+			{% for artist in artists %}
+				<option name="{{artist.id}}">{{artist.name}}</option>
+			{% endfor %}
+		</select>
+		<br>
+
+
+		<br>
+		<input type="Submit">
+	</form>
+
+
+
+{% endblock %}

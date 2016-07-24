@@ -84,7 +84,6 @@ def showArtCatalog():
     return render_template('art.html', arts = arts, pictures = pictures, artists = artists)
 
 @app.route('/art/<int:art_id>/')
-@app.route('/art/<int:art_id>/collection')
 def showCollectionItems(art_id):
     arts = session.query(Art).all()
     artworks = session.query(Artwork).filter_by(art_id = art_id).all()
@@ -102,11 +101,11 @@ def showArtworks(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
  
-    return render_template('artworks.html', artwork = artwork, pictures = pictures)
+    return render_template('artworks.html', artwork = artwork, pictures = pictures, artwork_id = artwork_id)
 
 # Edit/Update elements
 
-@app.route('/art/<int:art_id>/edit', methods=['GET', 'POST'])
+@app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
 def editArt(art_id):
     art = session.query(Art).filter_by(id = art_id).one()
 
@@ -124,7 +123,18 @@ def editArt(art_id):
     else:      
         return render_template('art_edit.html', art = art)
 
+@app.route('/art/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
+def editArtwork(artwork_id):
+    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
 
+    if request.method == 'POST':
+        print "Hello!"
+        return redirect(url_for('showArtworks', artwork_id = artwork_id))
+    else:
+        arts = session.query(Art).all()
+        artists = session.query(Artist).all()
+        return render_template('artwork_edit.html', artwork = artwork, arts = arts, artists = artists)
+    
 
 
 """
