@@ -5,9 +5,9 @@
 	<h2>Edit the artwork: {{artwork.name}}</h2>
 
 	<form method="POST">
-		<label for="type">Name</label>
+		<label for="name">Name</label>
 		<br>
-		<input name="type" type="text" value="{{artwork.name}}">
+		<input name="name" type="text" value="{{artwork.name}}">
 
 		<br>
 		<label for="description">Description</label>
@@ -28,15 +28,15 @@
 		<br>
 		
 		<br>
-		<label for="sweight">Weight (in kg - if suitable)</label>
+		<label for="weight">Weight (in kg - if suitable)</label>
 		<br>
-		<input name="weighte" type="text" value="{{artwork.weight}}">
+		<input name="weight" type="text" value="{{artwork.weight}}">
 		<br>
 
 		<br>
 		<label for="purchase_prize">Purchase prize</label>
 		<br>
-		<input name="type" type="text" value="{{artwork.purchase_prize}}">
+		<input name="purchase_prize" type="text" value="{{artwork.purchase_prize}}">
 		<br>
 
 		<br>
@@ -44,7 +44,7 @@
 		<br>
 		<select name="art_id">
 			{% for art in arts %}
-				<option name="{{art.id}}">{{art.type}}</option>
+				<option value="{{art.id}}">{{art.type}}</option>
 			{% endfor %}
 		</select>
 		<br>
@@ -54,7 +54,7 @@
 		<br>
 		<select name="artist_id">
 			{% for artist in artists %}
-				<option name="{{artist.id}}">{{artist.name}}</option>
+				<option value="{{artist.id}}">{{artist.name}}</option>
 			{% endfor %}
 		</select>
 		<br>

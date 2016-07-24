@@ -128,7 +128,24 @@ def editArtwork(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
 
     if request.method == 'POST':
-        print "Hello!"
+        artwork.name = request.form['name']
+        print "1"
+        artwork.description = request.form['description']
+        print "2"
+        artwork.purchase_year = request.form['purchase_year']
+        print "3"
+        artwork.size = request.form['size']
+        print "4"
+        artwork.weight = request.form['weight']
+        print "5"
+        artwork.purchase_prize = request.form['purchase_prize']
+        print "6"
+        artwork.art_id = request.form['art_id']
+        print "7"
+        artwork.artist_id = request.form['artist_id']
+
+        session.commit
+        print "The artwort, %s, was updated" %artwork.name
         return redirect(url_for('showArtworks', artwork_id = artwork_id))
     else:
         arts = session.query(Art).all()
