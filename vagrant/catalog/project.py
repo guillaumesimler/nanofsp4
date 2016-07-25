@@ -189,6 +189,26 @@ def editArtist(artist_id):
         return render_template('artist_edit.html', artist = artist)
 
 
+# Delete Entry
+
+@app.route('/art/<int:art_id>/delete/', methods=['GET', 'POST'])
+def deleteArt(art_id):
+    art = session.query(Art).filter_by(id = art_id).one()
+    artworks = session.query(Artwork).filter_by(art_id = art_id).all()
+    nb = len(artworks)
+
+    if request.method == 'POST':
+
+        for artwork in artworks:
+            session.delete(artwork)
+            
+        session.delete(art)
+        session.commit()
+        print "Entry and related artworks to %s were delete" %art.type
+        return redirect(url_for('showArtCatalog'))
+    else: 
+        return render_template('art_delete.html', art = art, artworks = artworks, nb = nb)
+
 """
     IV. Helper functions
 """

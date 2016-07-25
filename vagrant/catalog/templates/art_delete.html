@@ -1,0 +1,27 @@
+{% extends "generic_header.html" %}
+
+{% block content %}
+
+	<form method="POST">
+		<h1>Are you sure you want to delete the following entry about {{art.type}} ?</h1>
+		<br>
+		<input type="Submit" value="Yes">
+	</form>
+
+	<br>
+	<br>
+
+	{%if nb > 0 %}
+		<h2> Caution: the following <b>{{nb}}</b> artwork(s) will be deleted as well </h2>
+
+		<ul>
+			{% for artwork in artworks %}
+				<li>{{artwork.name}}</li>
+			{% endfor %}
+		</ul> 
+	{% else %}
+		<h4>There is no artwork linked to this art discipline</h4>
+	{% endif %}
+
+
+{% endblock %}
