@@ -12,12 +12,15 @@
 			{% endif %}
 
 			{% if artist.url %}
-				<a href="{{artist.url}}" target="_blank">more information</a>
+				<a href="{{artist.url}}" target="_blank">For more information, click here</a>
 			{% endif %}
-			
+		
+			<p><a href="{{url_for('editArtist', artist_id = artist.id)}}">Edit this entry</a></p>	
 		{% endif %}
+
+
 	{% endfor %}
-	<p><a href="#">Edit this entry</a></p>
+	
 
 	<h2>Other Artists</h2>
 

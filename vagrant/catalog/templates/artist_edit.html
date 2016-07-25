@@ -1,0 +1,31 @@
+{% extends "generic_header.html" %}
+
+{% block content %}
+
+	<h2>Edit the discipline</h2>
+
+	<form method="POST">
+		<label for="name">Discipline</label>
+		<br>
+		<input name="name" type="text" value="{{artist.name}}">
+		<br>
+	
+
+		<br>
+		<label for="information">Information</label>
+		<br>
+		<textarea class="edit_textarea" name="information">{{artist.information}}</textarea>
+
+		<br>
+		<label for="url">more Information (url):</label>
+		<br>
+		<input name="url" type="text" value="{{artist.url}}">
+		<br>
+
+		<br>
+		<input type="Submit">
+	</form>
+
+
+
+{% endblock %}

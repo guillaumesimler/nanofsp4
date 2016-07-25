@@ -78,10 +78,10 @@ def showArtCatalog():
     arts = session.query(Art).all()
     pictures = session.query(Picture).all()
     pictures = getFrontImage(pictures)
-
     artists = session.query(Artist).all() 
 
     return render_template('art.html', arts = arts, pictures = pictures, artists = artists)
+
 
 @app.route('/art/<int:art_id>/')
 def showCollectionItems(art_id):
@@ -95,6 +95,7 @@ def showArtists(artist_id):
     artists = session.query(Artist).all()
 
     return render_template('artists.html', artists = artists, artist_id = artist_id)
+
 
 @app.route('/art/artworks/<int:artwork_id>')
 def showArtworks(artwork_id):
@@ -123,6 +124,7 @@ def editArt(art_id):
     else:      
         return render_template('art_edit.html', art = art)
 
+
 @app.route('/art/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
 def editArtwork(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
@@ -138,13 +140,36 @@ def editArtwork(artwork_id):
         artwork.artist_id = request.form['artist_id']
 
         session.commit
+
         print "The artwort, %s, was updated" %artwork.name
         return redirect(url_for('showArtworks', artwork_id = artwork_id))
+
     else:
         arts = session.query(Art).all()
         artists = session.query(Artist).all()
+
         return render_template('artwork_edit.html', artwork = artwork, arts = arts, artists = artists)
-    
+
+
+@app.route('/art/artist/<int:artist_id>/edit/', methods=['GET', 'POST'])
+def editArtist(artist_id):
+    artist = session.query(Artist).filter_by(id = artist_id).one()
+
+    if request.method == 'POST':
+        artist.name = request.form['name']
+        print "1"
+        artist.information = request.form['information']
+        print "2"
+        artist.url = request.form['url']
+        print "3"
+
+        session.commit()
+
+        print "The artist, %s, was updated" %artist.name
+
+        return redirect(url_for('showArtists', artist_id = artist_id))
+    else: 
+        return render_template('artist_edit.html', artist = artist)
 
 
 """
