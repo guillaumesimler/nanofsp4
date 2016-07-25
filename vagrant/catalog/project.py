@@ -129,13 +129,34 @@ def editArtwork(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
 
     if request.method == 'POST':
+        if request.form['new_art'] == 'False':
+            artwork.art_id = request.form['art_id']
+        else:
+            new_value = request.form['add_art']
+
+            # Create the new art entry
+            new_Art = Art(type = new_value, user_id= 1 )
+            session.add(new_Art)
+            session.commit()
+
+            print "A new art type was created"
+
+            # Get the new art id
+
+            new_art = session.query(Art).filter_by(type = new_value).one()
+            artwork.art_id = new_art.id
+
+
         artwork.name = request.form['name']
         artwork.description = request.form['description']
         artwork.purchase_year = request.form['purchase_year']
         artwork.size = request.form['size']
         artwork.weight = request.form['weight']
         artwork.purchase_prize = request.form['purchase_prize']
-        artwork.art_id = request.form['art_id']
+
+
+
+
         artwork.artist_id = request.form['artist_id']
 
         session.commit
@@ -178,14 +199,25 @@ def getFrontImage(list):
     """
     n = len(list) - 1
 
+    # Get number of the Elements
+    nb = session.query(Art).all()
+    nb = len(nb)
+
+    result = []
+
     r1 = random.randint(0, n)
 
-    # Make sur the second r2
-    r2 = r1
-    while r2 == r1 and n > 0:
-        r2 = random.randint(0, n)
+    result.append(list[r1])
 
-    return [list[r1], list[r2]]
+    # Make sur the second r2
+    for x in xrange(1, nb):
+        r2 = r1
+        while r2 == r1 and n > 0:
+            r2 = random.randint(0, n)
+
+        result.append(list[r2])
+
+    return result
 
 """
     V. Webserver
