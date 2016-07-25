@@ -61,7 +61,7 @@ session = DBSession()
 # 3. Load Client Secret File (Google)
 
 # !!!! To be updated  once defined!!!!!
-#CLIENT_ID = json.loads(
+#   CLIENT_ID = json.loads(
 #   open('client_secrets.json', 'r').read())['web']['client_id']
 
 
@@ -71,7 +71,6 @@ session = DBSession()
 
 @app.route('/')
 @app.route('/art')
-
 # Display/read elements
 def showArtCatalog():
     # get data
@@ -157,11 +156,8 @@ def editArtist(artist_id):
 
     if request.method == 'POST':
         artist.name = request.form['name']
-        print "1"
         artist.information = request.form['information']
-        print "2"
         artist.url = request.form['url']
-        print "3"
 
         session.commit()
 

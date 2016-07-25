@@ -61,9 +61,13 @@ header {
 	margin: 10px;
 }
 
-/* EDIT*/
+/* Input: EDIT or CREATE*/
 
-.edit_textarea {
+.input_textarea {
 	width: 400px;
 	height: 250px;
+} 
+
+.input_url {
+	width: 400px;
 } 
