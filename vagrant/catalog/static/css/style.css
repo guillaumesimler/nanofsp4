@@ -71,3 +71,11 @@ header {
 .input_url {
 	width: 400px;
 } 
+
+.edit_new_i {
+	display: none;
+}
+
+.edit_new_v {
+	display: block;
+}
