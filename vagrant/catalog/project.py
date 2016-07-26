@@ -185,7 +185,7 @@ def editArtwork(artwork_id):
         return render_template('artwork_edit.html', artwork = artwork, arts = arts, artists = artists)
 
 
-@app.route('/artist/<int:artist_id>/edit/', methods=['GET', 'POST'])
+@app.route('/artists/<int:artist_id>/edit/', methods=['GET', 'POST'])
 def editArtist(artist_id):
     artist = session.query(Artist).filter_by(id = artist_id).one()
 
@@ -218,7 +218,7 @@ def deleteArt(art_id):
             
         session.delete(art)
         session.commit()
-        print "Entry and related artworks to %s were delete" %art.type
+        print "Entry and artworks related to %s were delete" %art.type
         return redirect(url_for('showArtCatalog'))
     else: 
         return render_template('art_delete.html', art = art, artworks = artworks, nb = nb)
@@ -242,6 +242,25 @@ def deleteArtwork(artwork_id):
         return redirect(url_for('showArtCatalog'))
     else: 
         return render_template('artwork_delete.html', artwork = artwork, nb = nb)
+
+
+@app.route('/artists/<int:artist_id>/delete/', methods=['GET', 'POST'])
+def deleteArtist(artist_id):
+    artist = session.query(Artist).filter_by(id = artist_id).one() 
+    artworks = session.query(Artwork).filter_by(artist_id = artist_id).all()
+    nb = len(artworks)
+
+    if request.method == 'POST':
+
+        for artwork in artworks:
+            session.delete(artwork)
+            
+        session.delete(artist)
+        session.commit()
+        print "Entry and artworks related to %s were delete" %artist.name
+        return redirect(url_for('showArtCatalog'))
+    else: 
+        return render_template('artist_delete.html', artist = artist, artworks = artworks, nb = nb)
 
 """
     IV. Helper functions

@@ -15,7 +15,8 @@
 				<a href="{{artist.url}}" target="_blank">For more information, click here</a>
 			{% endif %}
 		
-			<p><a href="{{url_for('editArtist', artist_id = artist.id)}}">Edit this entry</a></p>	
+			<p><a href="{{url_for('editArtist', artist_id = artist.id)}}">Edit this entry</a></p>
+			<p><a href="{{url_for('deleteArtist', artist_id = artist.id)}}">Delete this entry</a></p>	
 		{% endif %}
 
 
