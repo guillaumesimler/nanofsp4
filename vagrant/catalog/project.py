@@ -119,7 +119,7 @@ def editArt(art_id):
         session.commit()
         print "Entry about %s was updated" %art.type
 
-        return redirect(url_for('showCollectionItems', art_id = art_id))
+        return redirect(url_for('showArts', art_id = art_id))
     else:      
         return render_template('art_edit.html', art = art)
 
@@ -201,6 +201,33 @@ def editArtist(artist_id):
         return redirect(url_for('showArtists', artist_id = artist_id))
     else: 
         return render_template('artist_edit.html', artist = artist)
+
+
+# New Entry
+
+@app.route('/art/new/', methods=['GET', 'POST'])
+def addArt():
+    # Placeholder for the user
+    user = 1
+
+    if request.method == 'POST':
+        new_type = request.form['type']
+        new_description = request.form['description']
+
+        new_Art = Art(type = new_type, 
+                      description = new_description, 
+                      user_id = user)
+
+        session.add(new_Art)
+        session.commit()
+
+        print "Entry about %s was created" %new_type
+        
+        new_id = session.query(Art).filter_by(type = new_type).one()
+
+        return redirect(url_for('showArts', art_id = new_id.id))
+    else:      
+        return render_template('art_add.html')
 
 
 # Delete Entry
