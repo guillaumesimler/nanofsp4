@@ -223,6 +223,26 @@ def deleteArt(art_id):
     else: 
         return render_template('art_delete.html', art = art, artworks = artworks, nb = nb)
 
+
+@app.route('/art/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
+def deleteArtwork(artwork_id):
+    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
+    pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
+
+    nb = len(pictures)
+
+    if request.method == 'POST':
+
+        for picture in pictures:
+            session.delete(picture)
+            
+        session.delete(artwork)
+        session.commit()
+        print "Entry and pictures related to %s were delete" %artwork.name
+        return redirect(url_for('showArtCatalog'))
+    else: 
+        return render_template('artwork_delete.html', artwork = artwork, nb = nb)
+
 """
     IV. Helper functions
 """
