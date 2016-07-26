@@ -6,7 +6,7 @@
 	{% for art in arts %}
 		<article class="article_body">
 			<div class="article_left">
-				<h3><a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a></h3>
+				<h3><a href="{{url_for('showArts', art_id = art.id)}}">{{art.type}}</a></h3>
 				<p>
 					{{art.description}}
 				</p>

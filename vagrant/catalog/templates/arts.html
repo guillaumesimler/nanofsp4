@@ -25,7 +25,7 @@
 				{% for art in arts %}
 					{% if art.id != id %}
 						<li>
-							<a href="{{url_for('showCollectionItems', art_id = art.id)}}">{{art.type}}</a>
+							<a href="{{url_for('showArts', art_id = art.id)}}">{{art.type}}</a>
 						</li>
 					{% endif %}
 				{% endfor %}
