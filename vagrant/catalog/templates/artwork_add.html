@@ -2,41 +2,41 @@
 
 {% block content %}
 
-	<h2>Edit the artwork: {{artwork.name}}</h2>
+	<h2>Create a new artwork fact sheet:</h2>
 
 	<form method="POST">
 		<label for="name">Name</label>
 		<br>
-		<input name="name" type="text" value="{{artwork.name}}">
+		<input name="name" type="text">
 
 		<br>
 		<label for="description">Description</label>
 		<br>
-		<textarea class="input_textarea" name="description">{{artwork.description}}</textarea>
+		<textarea class="input_textarea" name="description"></textarea>
 		<br>
 
 		<br>
 		<label for="purchase_year">Year of purchase</label>
 		<br>
-		<input name="purchase_year" type="text" value="{{artwork.purchase_year}}">
+		<input name="purchase_year" type="text">
 		<br>
 
 		<br>
 		<label for="size">Size (width & heigth & depth - if suitable)</label>
 		<br>
-		<input name="size" type="text" value="{{artwork.size}}">
+		<input name="size" type="text">
 		<br>
 		
 		<br>
 		<label for="weight">Weight (in kg - if suitable)</label>
 		<br>
-		<input name="weight" type="text" value="{{artwork.weight}}">
+		<input name="weight" type="text">
 		<br>
 
 		<br>
 		<label for="purchase_prize">Purchase prize</label>
 		<br>
-		<input name="purchase_prize" type="text" value="{{artwork.purchase_prize}}">
+		<input name="purchase_prize" type="text">
 		<br>
 
 		<br>
@@ -44,7 +44,7 @@
 		<br>
 		<select id="select_art" name="art_id">
 			{% for art in arts %}
-				<option value="{{art.id}}" {% if artwork.art_id == art.id%} selected="selected" {% endif%}>{{art.type}}</option>
+				<option value="{{art.id}}">{{art.type}}</option>
 			{% endfor %}
 				<option value="new">new discipline</option>
 		</select>
@@ -71,7 +71,7 @@
 		<br>
 		<select id="select_artist" name="artist_id">
 			{% for artist in artists %}
-				<option value="{{artist.id}}" {% if artwork.artist_id == artist.id%} selected="selected" {% endif%}>{{artist.name}}</option>
+				<option value="{{artist.id}}">{{artist.name}}</option>
 			{% endfor %}
 				<option value="new">new artist</option>
 

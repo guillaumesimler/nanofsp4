@@ -150,7 +150,7 @@ def editArtwork(artwork_id):
 
         # Enable the input of a new ARTIST
         if request.form['new_artist'] == 'False':
-            artwork.art_id = request.form['artist_id']
+            artwork.artist_id = request.form['artist_id']
         else:
             new_value = request.form['add_artist']
 
@@ -173,7 +173,7 @@ def editArtwork(artwork_id):
         artwork.weight = request.form['weight']
         artwork.purchase_prize = request.form['purchase_prize']
 
-        session.commit
+        session.commit()
 
         print "The artwort, %s, was updated" %artwork.name
         return redirect(url_for('showArtworks', artwork_id = artwork_id))
@@ -228,6 +228,82 @@ def addArt():
         return redirect(url_for('showArts', art_id = new_id.id))
     else:      
         return render_template('art_add.html')
+
+
+@app.route('/artworks/new/', methods=['GET', 'POST'])
+def addArtwork():
+
+    if request.method == 'POST':
+        user = 1
+        # Enable the input of a new ART Discipline
+        if request.form['new_art'] == 'False':
+            new_art_id = request.form['art_id']
+        else:
+            new_value = request.form['add_art']
+
+            # Create the new art entry
+            new_Art = Art(type = new_value, user_id = user)
+            session.add(new_Art)
+            session.commit()
+
+            print "A new art type was created"
+
+            # Get the new art id
+
+            new_art = session.query(Art).filter_by(type = new_value).one()
+            new_art_id = new_art.id
+
+        # Enable the input of a new ARTIST
+        if request.form['new_artist'] == 'False':
+            new_artist_id = request.form['artist_id']
+        else:
+            new_value = request.form['add_artist']
+
+            # Create the new art entry
+            new_Artist = Artist(name = new_value, user_id = user)
+            session.add(new_Artist)
+            session.commit()
+
+            print "A new artist was created"
+
+            # Get the new art id
+
+            new_artist = session.query(Artist).filter_by(name = new_value).one()
+            new_artist_id  = new_artist.id
+
+        # Get the other input fields
+        new_name = request.form['name']
+        new_description = request.form['description']
+        new_purchase_year = request.form['purchase_year']
+        new_size = request.form['size']
+        new_weight = request.form['weight']
+        new_purchase_prize = request.form['purchase_prize']
+
+        # Create the new entry
+        new_artwork = Artwork(name = new_name,
+                              description = new_description, 
+                              purchase_year = new_purchase_year,
+                              size = new_size,
+                              weight = new_weight,
+                              purchase_prize = new_purchase_prize,
+                              user_id = user,
+                              art_id = new_art_id,
+                              artist_id = new_artist_id)
+        session.add(new_artwork)
+        session.commit()
+
+        # Get the new id
+
+        new_artwork_id = session.query(Artwork).filter_by(name = new_name).one()
+
+        print "The artwort, %s, was updated" %new_name
+        return redirect(url_for('showArtworks', artwork_id = new_artwork_id.id))
+
+    else:
+        arts = session.query(Art).all()
+        artists = session.query(Artist).all()
+
+        return render_template('artwork_edit.html', arts = arts, artists = artists)
 
 
 # Delete Entry
