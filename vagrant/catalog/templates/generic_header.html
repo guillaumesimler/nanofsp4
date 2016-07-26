@@ -28,11 +28,13 @@
 		<div class="header-left">
 			<a href="#">Login</a>
 			<br>
-			<a href="/art">Back to main menu</a>
+			<a href="{{ url_for('showArtCatalog')}}">Back to main menu</a>
 	</header>
 
+	<section>
 	{% block content %}
 	{% endblock %}
+	</section>
 </body>
 
 </html>

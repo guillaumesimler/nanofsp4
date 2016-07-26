@@ -70,7 +70,7 @@ session = DBSession()
 """
 
 @app.route('/')
-@app.route('/art')
+@app.route('/catalog/')
 # Display/read elements
 def showArtCatalog():
     # get data
@@ -89,14 +89,14 @@ def showArts(art_id):
     return render_template('arts.html', arts = arts, id = art_id, artworks = artworks)
 
 
-@app.route('/art/artist/<int:artist_id>/')
+@app.route('/artist/<int:artist_id>/')
 def showArtists(artist_id):
     artists = session.query(Artist).all()
 
     return render_template('artists.html', artists = artists, artist_id = artist_id)
 
 
-@app.route('/art/artworks/<int:artwork_id>')
+@app.route('/artworks/<int:artwork_id>')
 def showArtworks(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
@@ -124,7 +124,7 @@ def editArt(art_id):
         return render_template('art_edit.html', art = art)
 
 
-@app.route('/art/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
+@app.route('/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
 def editArtwork(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
 
@@ -185,7 +185,7 @@ def editArtwork(artwork_id):
         return render_template('artwork_edit.html', artwork = artwork, arts = arts, artists = artists)
 
 
-@app.route('/art/artist/<int:artist_id>/edit/', methods=['GET', 'POST'])
+@app.route('/artist/<int:artist_id>/edit/', methods=['GET', 'POST'])
 def editArtist(artist_id):
     artist = session.query(Artist).filter_by(id = artist_id).one()
 
@@ -224,7 +224,7 @@ def deleteArt(art_id):
         return render_template('art_delete.html', art = art, artworks = artworks, nb = nb)
 
 
-@app.route('/art/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
+@app.route('/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
 def deleteArtwork(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
