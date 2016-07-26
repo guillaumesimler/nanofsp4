@@ -29,8 +29,8 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key = True)
-    name = Column(String(250), nullable=False)
-    email = Column(String(100), nullable=False)
+    name = Column(String(250))
+    email = Column(String(100))
     # picture is a string, as it would be an Url to the picture
     picture = Column(String(250))
 
@@ -43,10 +43,10 @@ class Art(Base):
     __tablename__ = 'art'
    
     id = Column(Integer, primary_key=True)
-    type = Column(String(80), nullable=False)
+    type = Column(String(80))
     description = Column(Text)
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship(User)
 
     # no user input here, as it is such big a change
@@ -74,7 +74,7 @@ class Artist(Base):
     information = Column(Text)
     url = Column(String(80))
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship(User)
 
 
@@ -104,13 +104,13 @@ class Artwork(Base):
     weight = Column(String(20))
     purchase_prize = Column(String(80))
 
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship(User)
 
-    art_id = Column(Integer, ForeignKey('art.id'))
+    art_id = Column(Integer, ForeignKey('art.id'), nullable=False)
     art = relationship(Art)
 
-    artist_id = Column(Integer, ForeignKey('artist.id'))
+    artist_id = Column(Integer, ForeignKey('artist.id'), nullable=False)
     artist = relationship(Artist)
 
 
@@ -141,7 +141,7 @@ class Picture(Base):
     photographer = Column(String(200))
     id = Column(Integer, primary_key = True)
     
-    artwork_id = Column(Integer, ForeignKey('artwork.id'))
+    artwork_id = Column(Integer, ForeignKey('artwork.id'), nullable=False)
     artwork = relationship(Artwork)
 
 

@@ -129,6 +129,8 @@ def editArtwork(artwork_id):
     artwork = session.query(Artwork).filter_by(id = artwork_id).one()
 
     if request.method == 'POST':
+
+        # Enable the input of a new ART Discipline
         if request.form['new_art'] == 'False':
             artwork.art_id = request.form['art_id']
         else:
@@ -146,6 +148,23 @@ def editArtwork(artwork_id):
             new_art = session.query(Art).filter_by(type = new_value).one()
             artwork.art_id = new_art.id
 
+        # Enable the input of a new ARTIST
+        if request.form['new_artist'] == 'False':
+            artwork.art_id = request.form['artist_id']
+        else:
+            new_value = request.form['add_artist']
+
+            # Create the new art entry
+            new_Artist = Artist(name = new_value, user_id= 1 )
+            session.add(new_Artist)
+            session.commit()
+
+            print "A new artist was created"
+
+            # Get the new art id
+
+            new_artist = session.query(Artist).filter_by(name = new_value).one()
+            artwork.art_id = new_artist.id
 
         artwork.name = request.form['name']
         artwork.description = request.form['description']
@@ -153,11 +172,6 @@ def editArtwork(artwork_id):
         artwork.size = request.form['size']
         artwork.weight = request.form['weight']
         artwork.purchase_prize = request.form['purchase_prize']
-
-
-
-
-        artwork.artist_id = request.form['artist_id']
 
         session.commit
 

@@ -228,7 +228,7 @@ for artwork in artworks:
     check_artwork = session.query(Artwork).filter_by(name = artwork['name']).first()
 
     if check_artwork: 
-        print "This artist %s seems to be already in the database." % artwork['name']
+        print "This artwork %s seems to be already in the database." % artwork['name']
         print "Please check your input and use the front end" 
     else:
         insert_artwork= Artwork(name = escape(artwork['name']), 
