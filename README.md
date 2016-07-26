@@ -15,6 +15,12 @@ The aim is to design an application with a **CRUD backbone** and **authorization
 
 This app depicts my **private art collection**, a project I wanted to implemented long ago.
 
+
+Discussion
+----
+A lot of the modifications were discussed in [Github](https://github.com/guillaumesimler/nanofsp4/issues?utf8=%E2%9C%93&q=)
+
+
 Ressources
 ----
 
@@ -28,6 +34,8 @@ The app uses the following ressources:
 	- Helper modules, such as [random](https://docs.python.org/2/library/random.html), [string](https://docs.python.org/2/library/string.html), [json](https://docs.python.org/2.7/library/json.html), 
 	- HTTP helper modules, such as [Requests](http://docs.python-requests.org/en/master/) and [httplib2](https://pypi.python.org/pypi/httplib2)
 * **Frontend**
+	- [Jquery](https://jquery.com/)
+	- [Bootstrap](http://getbootstrap.com/)
 
 
 
