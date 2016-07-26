@@ -2,24 +2,24 @@
 
 {% block content %}
 
-	<h2>Edit the artist</h2>
+	<h2>Create a new artist fact sheet</h2>
 
 	<form method="POST">
-		<label for="name">Artist</label>
+		<label for="name">Name</label>
 		<br>
-		<input name="name" type="text" value="{{artist.name}}">
+		<input name="name" type="text">
 		<br>
 	
 
 		<br>
 		<label for="information">Information</label>
 		<br>
-		<textarea class="input_textarea" name="information">{{artist.information}}</textarea>
+		<textarea class="input_textarea" name="information"></textarea>
 
 		<br>
 		<label for="url">more Information (url):</label>
 		<br>
-		<input class="input_url" name="url" type="text" value="{{artist.url}}">
+		<input class="input_url" name="url" type="text">
 		<br>
 
 		<br>

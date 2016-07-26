@@ -103,6 +103,7 @@ def showArtworks(artwork_id):
  
     return render_template('artworks.html', artwork = artwork, pictures = pictures, artwork_id = artwork_id)
 
+
 # Edit/Update elements
 
 @app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
@@ -304,6 +305,31 @@ def addArtwork():
         artists = session.query(Artist).all()
 
         return render_template('artwork_edit.html', arts = arts, artists = artists)
+
+
+@app.route('/artists/new/', methods=['GET', 'POST'])
+def addArtist():
+    user = 1
+
+    if request.method == 'POST':
+        new_name = request.form['name']
+        new_information = request.form['information']
+        new_url = request.form['url']
+
+        new_artist = Artist(name = new_name,
+                            information = new_information,
+                            url = new_url,
+                            user_id = user)
+        session.add(new_artist)
+        session.commit()
+
+        new_artist_id = session.query(Artist).filter_by(name = new_name).one()
+
+        print "The artist, %s, was created" % new_name
+
+        return redirect(url_for('showArtists', artist_id = new_artist_id.id))
+    else: 
+        return render_template('artist_add.html')
 
 
 # Delete Entry
