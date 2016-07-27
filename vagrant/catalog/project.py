@@ -66,12 +66,35 @@ session = DBSession()
 
 
 """
-    III. Main program
+    IV. Main program
 """
+
+# IV.1 JSON Gateways
+#
+# Enables the extraction of the data in JSON
+# Please read the discussion about main and secondary 
+# data in the README
+
+    # IV.1.1. Generic JSON requests
+@app.route('/art/JSON/')
+def json_arts():
+    arts = session.query(Art).all()
+    return jsonify(arts = [art.serialize for art in arts])
+
+    # IV.1.2. Specific JSON request
+
+@app.route('/artworks/<int:artwork_id>/pictures/JSON')
+def Json_pictures_specific(artwork_id):
+    pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
+    return jsonify(pictures = [picture.serialize for picture in pictures])
+
+
+# IV.2. Display/read elements
+#
+# This will display the elements
 
 @app.route('/')
 @app.route('/catalog/')
-# Display/read elements
 def showArtCatalog():
     # get data
     arts = session.query(Art).all()
@@ -104,7 +127,9 @@ def showArtworks(artwork_id):
     return render_template('artworks.html', artwork = artwork, pictures = pictures, artwork_id = artwork_id)
 
 
-# Edit/Update elements
+# IV.3 Edit/Update elements
+#
+# This enables the update of elements
 
 @app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
 def editArt(art_id):
@@ -206,7 +231,9 @@ def editArtist(artist_id):
         return render_template('artist_edit.html', artist = artist)
 
 
-# New Entry
+# IV.4 add elements
+#
+# This enables the addition of elements
 
 @app.route('/art/new/', methods=['GET', 'POST'])
 def addArt():
@@ -334,7 +361,9 @@ def addArtist():
         return render_template('artist_add.html')
 
 
-# Delete Entry
+# IV.5 delete elements
+#
+# This enables the deletion of elements
 
 @app.route('/art/<int:art_id>/delete/', methods=['GET', 'POST'])
 def deleteArt(art_id):
@@ -398,7 +427,7 @@ def deleteArtist(artist_id):
         return render_template('artist_delete.html', artist = artist, artworks = artworks, nb = nb)
 
 """
-    IV. Helper functions
+    V. Helper functions
 """
 
 def getFrontImage(list):
@@ -462,7 +491,7 @@ def message_delete(type, value):
     flash(message)
 
 """
-    V. Webserver
+    VI. Webserver
 """
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

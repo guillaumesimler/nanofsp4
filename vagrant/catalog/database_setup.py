@@ -150,7 +150,7 @@ class Picture(Base):
         """Return object data in easily serializeable format"""
         return {
            'id'           : self.id,
-           'filename'     : self.price,
+           'filename'     : self.filename,
            'photographer' : self.photographer,
            'artwork_id'   : self.artwork_id,
         }
