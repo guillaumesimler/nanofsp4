@@ -200,6 +200,13 @@ def editArtwork(artwork_id):
         artwork.weight = request.form['weight']
         artwork.purchase_prize = request.form['purchase_prize']
 
+        #Delete the pictures
+        targetedpictures = getList(request.form['delete_picture'])
+        
+        for targetedpicture in targetedpictures:
+             target = session.query(Picture).filter_by(id = int(targetedpicture)).one()
+             session.delete(target)
+
         session.commit()
         
         message_update('artwork', artwork.name)
@@ -489,6 +496,13 @@ def message_delete(type, value):
     message = "The %s, %s, and its child dependencies -if existing- were successfully deleted" %(type, value)
     print message
     flash(message)
+
+def getList(input):
+    output = input.replace('[', '')
+    output = output.replace(']', '')
+    output = output.replace(' ', '')
+
+    return output.split(',')
 
 """
     VI. Webserver
