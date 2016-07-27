@@ -118,7 +118,8 @@ def editArt(art_id):
         art.description = edited_description
 
         session.commit()
-        print "Entry about %s was updated" %art.type
+
+        message_update('art', edited_type)
 
         return redirect(url_for('showArts', art_id = art_id))
     else:      
@@ -142,8 +143,8 @@ def editArtwork(artwork_id):
             session.add(new_Art)
             session.commit()
 
-            print "A new art type was created"
-
+            message_create('art', new_value)
+            
             # Get the new art id
 
             new_art = session.query(Art).filter_by(type = new_value).one()
@@ -160,7 +161,7 @@ def editArtwork(artwork_id):
             session.add(new_Artist)
             session.commit()
 
-            print "A new artist was created"
+            message_create('artist', new_value)
 
             # Get the new art id
 
@@ -175,8 +176,9 @@ def editArtwork(artwork_id):
         artwork.purchase_prize = request.form['purchase_prize']
 
         session.commit()
+        
+        message_update('artwork', artwork.name)
 
-        print "The artwort, %s, was updated" %artwork.name
         return redirect(url_for('showArtworks', artwork_id = artwork_id))
 
     else:
@@ -197,7 +199,7 @@ def editArtist(artist_id):
 
         session.commit()
 
-        print "The artist, %s, was updated" %artist.name
+        message_update('artist', artist.name)
 
         return redirect(url_for('showArtists', artist_id = artist_id))
     else: 
@@ -222,7 +224,7 @@ def addArt():
         session.add(new_Art)
         session.commit()
 
-        print "Entry about %s was created" %new_type
+        message_create('art', new_type)
         
         new_id = session.query(Art).filter_by(type = new_type).one()
 
@@ -247,7 +249,7 @@ def addArtwork():
             session.add(new_Art)
             session.commit()
 
-            print "A new art type was created"
+            message_create('art', new_value)
 
             # Get the new art id
 
@@ -265,8 +267,7 @@ def addArtwork():
             session.add(new_Artist)
             session.commit()
 
-            print "A new artist was created"
-
+            message_create('artist', new_value)
             # Get the new art id
 
             new_artist = session.query(Artist).filter_by(name = new_value).one()
@@ -297,14 +298,15 @@ def addArtwork():
 
         new_artwork_id = session.query(Artwork).filter_by(name = new_name).one()
 
-        print "The artwort, %s, was updated" %new_name
+        message_create('artworks', new_name)
+
         return redirect(url_for('showArtworks', artwork_id = new_artwork_id.id))
 
     else:
         arts = session.query(Art).all()
         artists = session.query(Artist).all()
 
-        return render_template('artwork_edit.html', arts = arts, artists = artists)
+        return render_template('artwork_add.html', arts = arts, artists = artists)
 
 
 @app.route('/artists/new/', methods=['GET', 'POST'])
@@ -325,7 +327,7 @@ def addArtist():
 
         new_artist_id = session.query(Artist).filter_by(name = new_name).one()
 
-        print "The artist, %s, was created" % new_name
+        message_create('artist', new_name)
 
         return redirect(url_for('showArtists', artist_id = new_artist_id.id))
     else: 
@@ -347,7 +349,8 @@ def deleteArt(art_id):
             
         session.delete(art)
         session.commit()
-        print "Entry and artworks related to %s were delete" %art.type
+        
+        message_delete('art', art.type)
         return redirect(url_for('showArtCatalog'))
     else: 
         return render_template('art_delete.html', art = art, artworks = artworks, nb = nb)
@@ -367,7 +370,9 @@ def deleteArtwork(artwork_id):
             
         session.delete(artwork)
         session.commit()
-        print "Entry and pictures related to %s were delete" %artwork.name
+        
+        message_delete('artwort', artwork.name)
+
         return redirect(url_for('showArtCatalog'))
     else: 
         return render_template('artwork_delete.html', artwork = artwork, nb = nb)
@@ -386,7 +391,8 @@ def deleteArtist(artist_id):
             
         session.delete(artist)
         session.commit()
-        print "Entry and artworks related to %s were delete" %artist.name
+        
+        message_delete('artist', artist.name)
         return redirect(url_for('showArtCatalog'))
     else: 
         return render_template('artist_delete.html', artist = artist, artworks = artworks, nb = nb)
@@ -420,6 +426,40 @@ def getFrontImage(list):
         result.append(list[r2])
 
     return result
+
+def message_update(type, value):
+    """
+        Creates two messages respectively for the back (print) and the front end (flash())
+        Gets two variables:
+            - type which could be: art, artwork, artist
+            - value: the variable with the change
+    """
+    message = "A new %s, %s, was successfully updated"  %(type, value)
+    print message
+    flash(message)
+
+def message_create(type, value):
+    """
+        Creates two messages respectively for the back (print) and the front end (flash())
+        Gets two variables:
+            - type which could be: art, artwork, artist
+            - value: the variable with the change
+    """
+    
+    message = "The %s, %s, was successfully created" %(type, value)
+    print message
+    flash(message)
+
+def message_delete(type, value):
+    """
+        Creates two messages respectively for the back (print) and the front end (flash())
+        Gets two variables:
+            - type which could be: art, artwork, artist
+            - value: the variable with the change
+    """
+    message = "The %s, %s, and its child dependencies -if existing- were successfully deleted" %(type, value)
+    print message
+    flash(message)
 
 """
     V. Webserver

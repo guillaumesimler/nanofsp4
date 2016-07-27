@@ -2,6 +2,21 @@
 
 {% block content %}
 
+
+	<div class = 'flash'>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+		  
+			<ul>
+			{% for message in messages %}
+				<li> <b> {{ message }} </b> </li>
+			{% endfor %}
+			</ul>
+
+			{% endif %}
+		{% endwith %}
+	</div>
+	
 	{% for artist in artists %}
 		{% if artist_id == artist.id %}
 			

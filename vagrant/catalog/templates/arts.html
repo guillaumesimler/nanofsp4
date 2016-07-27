@@ -1,7 +1,22 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
-	<div class="items_body">	
+	<div class="items_body">
+		<div class = 'flash'>
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+		  
+			<ul>
+			{% for message in messages %}
+				<li> <b> {{ message }} </b> </li>
+			{% endfor %}
+			</ul>
+
+			{% endif %}
+	{% endwith %}
+
+</div>
+
 		<div class = "items_left">
 			<!-- Introducing the selected art element -->
 			{% for art in arts %}
