@@ -1,109 +1,116 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
-
+<div class="container">
 	<h2>Edit the artwork: {{artwork.name}}</h2>
 
 	<form method="POST">
-		<label for="name">Name</label>
-		<br>
-		<input name="name" type="text" value="{{artwork.name}}">
+		<div class="container">
+			<div class="col-md-6">
+				<label for="name">Name</label>
+				<br>
+				<input name="name" type="text" value="{{artwork.name}}">
 
-		<br>
-		<label for="description">Description</label>
-		<br>
-		<textarea class="input_textarea" name="description">{{artwork.description}}</textarea>
-		<br>
+				<br>
+				<label for="description">Description</label>
+				<br>
+				<textarea class="input_textarea" name="description">{{artwork.description}}</textarea>
+				<br>
 
-		<br>
-		<label for="purchase_year">Year of purchase</label>
-		<br>
-		<input name="purchase_year" type="text" value="{{artwork.purchase_year}}">
-		<br>
+				<br>
+				<label for="purchase_year">Year of purchase</label>
+				<br>
+				<input name="purchase_year" type="text" value="{{artwork.purchase_year}}">
+				<br>
 
-		<br>
-		<label for="size">Size (width & heigth & depth - if suitable)</label>
-		<br>
-		<input name="size" type="text" value="{{artwork.size}}">
-		<br>
-		
-		<br>
-		<label for="weight">Weight (in kg - if suitable)</label>
-		<br>
-		<input name="weight" type="text" value="{{artwork.weight}}">
-		<br>
+				<br>
+				<label for="size">Size (width & heigth & depth - if suitable)</label>
+				<br>
+				<input name="size" type="text" value="{{artwork.size}}">
+				<br>
+				
+				<br>
+				<label for="weight">Weight (in kg - if suitable)</label>
+				<br>
+				<input name="weight" type="text" value="{{artwork.weight}}">
+				<br>
 
-		<br>
-		<label for="purchase_prize">Purchase prize</label>
-		<br>
-		<input name="purchase_prize" type="text" value="{{artwork.purchase_prize}}">
-		<br>
+				<br>
+				<label for="purchase_prize">Purchase prize</label>
+				<br>
+				<input name="purchase_prize" type="text" value="{{artwork.purchase_prize}}">
+				<br>
 
-		<br>
-		<label for="art_id">Discipline:</label>
-		<br>
-		<select id="select_art" name="art_id">
-			{% for art in arts %}
-				<option value="{{art.id}}" {% if artwork.art_id == art.id%} selected="selected" {% endif%}>{{art.type}}</option>
-			{% endfor %}
-				<option value="new">new discipline</option>
-		</select>
-		<br>
+				<br>
+				<label for="art_id">Discipline:</label>
+				<br>
+				<select id="select_art" name="art_id">
+					{% for art in arts %}
+						<option value="{{art.id}}" {% if artwork.art_id == art.id%} selected="selected" {% endif%}>{{art.type}}</option>
+					{% endfor %}
+						<option value="new">new discipline</option>
+				</select>
+				<br>
 
-		<!-- Optional part for new art entry -->
+				<!-- Optional part for new art entry -->
 
-		<div id="edit_new_art" class="edit_new_i">
-			<h4>Please add a new art discipline :</h4>
+				<div id="edit_new_art" class="edit_new_i">
+					<h4>Please add a new art discipline :</h4>
 
-			<input id="new_art" name="new_art" type="hidden" value='False'>
-			<label for="add_art">The name of this discipline</Label>			
-			<br>
-			<input name="add_art" type="text">
-			<br>
-			<p>Please use the edit function of the artist page to add more information</p>	
-	
+					<input id="new_art" name="new_art" type="hidden" value='False'>
+					<label for="add_art">The name of this discipline</Label>			
+					<br>
+					<input name="add_art" type="text">
+					<br>
+					<p>Please use the edit function of the artist page to add more information</p>	
+			
+				</div>
+
+				<!-- End of optional value -->
+
+				<br>
+				<label for="artist_id">Artist:</label>
+				<br>
+				<select id="select_artist" name="artist_id">
+					{% for artist in artists %}
+						<option value="{{artist.id}}" {% if artwork.artist_id == artist.id%} selected="selected" {% endif%}>{{artist.name}}</option>
+					{% endfor %}
+						<option value="new">new artist</option>
+
+				</select>
+				<br>
+
+
+				<!-- Optional part for new art entry -->
+
+				<div id="edit_new_artist" class="edit_new_i">
+					<h4>Please add a new artist:</h4>
+
+					<input id="new_artist" name="new_artist" type="hidden" value='False'>
+					<label for="add_artist">The name of this new artist</Label>			
+					<br>
+					<input name="add_artist" type="text">
+					<br>
+					<p>Please use the edit function of the artist page to add more information</p>	
+			
+				</div>
+			</div>
+
+			´<div class="col-md-6">
+				<h4>Related Pictures</h4>
+			</div>
+			<!-- End of optional value -->
 		</div>
-
-		<!-- End of optional value -->
-
-		<br>
-		<label for="artist_id">Artist:</label>
-		<br>
-		<select id="select_artist" name="artist_id">
-			{% for artist in artists %}
-				<option value="{{artist.id}}" {% if artwork.artist_id == artist.id%} selected="selected" {% endif%}>{{artist.name}}</option>
-			{% endfor %}
-				<option value="new">new artist</option>
-
-		</select>
-		<br>
-
-
-		<!-- Optional part for new art entry -->
-
-		<div id="edit_new_artist" class="edit_new_i">
-			<h4>Please add a new artist:</h4>
-
-			<input id="new_artist" name="new_artist" type="hidden" value='False'>
-			<label for="add_artist">The name of this new artist</Label>			
-			<br>
-			<input name="add_artist" type="text">
-			<br>
-			<p>Please use the edit function of the artist page to add more information</p>	
-	
-		</div>
-
-		<!-- End of optional value -->
-
 
 		<br>
 		<input type="Submit">
 
 	</form>
 
+</div>
 
-	<!-- Add Scripting -->
-	<script src="{{ url_for('static', filename='js/artwork_entry.js')}}"></script>
+<!-- Add Scripting -->
+<script src="{{ url_for('static', filename='js/artwork_entry.js')}}"></script>
 
 
 {% endblock %}

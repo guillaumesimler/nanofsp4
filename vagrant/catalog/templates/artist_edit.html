@@ -3,26 +3,33 @@
 {% block content %}
 
 	<h2>Edit the artist</h2>
-
 	<form method="POST">
-		<label for="name">Artist</label>
-		<br>
-		<input name="name" type="text" value="{{artist.name}}">
-		<br>
-	
+		<div class="container">
+			<div class="col-md-6">
+				<label for="name">Artist</label>
+				<br>
+				<input name="name" type="text" value="{{artist.name}}">
+				<br>
+			
 
-		<br>
-		<label for="information">Information</label>
-		<br>
-		<textarea class="input_textarea" name="information">{{artist.information}}</textarea>
+				<br>
+				<label for="information">Information</label>
+				<br>
+				<textarea class="input_textarea" name="information">{{artist.information}}</textarea>
 
-		<br>
-		<label for="url">more Information (url):</label>
-		<br>
-		<input class="input_url" name="url" type="text" value="{{artist.url}}">
+				<br>
+				<label for="url">more Information (url):</label>
+				<br>
+				<input class="input_url" name="url" type="text" value="{{artist.url}}">
+				<br>
+			</div>
+
+			<div class="col-md-6">
+				<p>pictures</p>
+			</div>
+		</div>
 		<br>
 
-		<br>
 		<input type="Submit">
 	</form>
 
