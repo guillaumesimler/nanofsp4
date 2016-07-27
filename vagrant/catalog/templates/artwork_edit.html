@@ -96,10 +96,20 @@
 				</div>
 			</div>
 
-			´<div class="col-md-6">
-				<h4>Related Pictures</h4>
+			<div class="col-md-6">
+				<h4 id="picture_header">Related Pictures</h4>
+
+				<table id="pictures_list"></table>
+			
+			
+			<br>
+		
+			<p>
+				<label for="new_picture">Add a picture</label>
+				<input id="new_picture" name="new_picture" type="file">
+			</p>
 			</div>
-			<!-- End of optional value -->
+
 		</div>
 
 		<br>
@@ -111,6 +121,7 @@
 
 <!-- Add Scripting -->
 <script src="{{ url_for('static', filename='js/artwork_entry.js')}}"></script>
+<script src="{{ url_for('static', filename='js/picturehandler.js')}}"></script>
 
 
 {% endblock %}
