@@ -109,6 +109,7 @@ def showArtCatalog():
 def showArts(art_id):
     arts = session.query(Art).all()
     artworks = session.query(Artwork).filter_by(art_id = art_id).all()
+
     return render_template('arts.html', arts = arts, id = art_id, artworks = artworks)
 
 

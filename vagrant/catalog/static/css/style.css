@@ -16,8 +16,9 @@ header {
 .article_left {
 	width: 40% 
 }
-.article_img {
+.catalog-img {
 	max-height: 30vh;
+	margin: 15px;
 }
 /* Items */
 
@@ -80,6 +81,6 @@ header {
 	display: block;
 }
 
-.thumbnail-xs {
-	height: 15px;
+.thumbnail-align {
+	vertical-align: bottom;
 }
