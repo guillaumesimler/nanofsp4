@@ -21,7 +21,7 @@ from flask import session as login_session
 
 # 2. SQL Alchemy: manages the database
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 
 from database_setup import Base, Art, Artist, Artwork, Picture, User 
@@ -116,7 +116,12 @@ def showArts(art_id):
 def showArtists(artist_id):
     artists = session.query(Artist).all()
 
-    return render_template('artists.html', artists = artists, artist_id = artist_id)
+    pictures = session.query(Artwork.name.label('Name'), 
+                             Artwork.id.label('id'), 
+                             Picture.filename.label('filename'), 
+                             Picture.photographer.label('photographer')).filter(Artwork.artist_id == artist_id).join(Picture).all()
+
+    return render_template('artists.html', artists = artists, artist_id = artist_id, pictures = pictures)
 
 
 @app.route('/artworks/<int:artwork_id>')

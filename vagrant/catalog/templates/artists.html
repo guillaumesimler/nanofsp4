@@ -16,41 +16,71 @@
 				{% endif %}
 			{% endwith %}
 		</div>
-		
-		{% for artist in artists %}
-			{% if artist_id == artist.id %}
-				
-				<h2>{{artist.name}}</h2>
 
-				{% if artist.information %}
-					<p>{{artist.information}}</p>
-				{% endif %}
+		<div class="row">
 
-				<div class="row">
-					{% if artist.url %}
-						<a href="{{artist.url}}" class="col-md-4 text-center" target="_blank">For more information, click here</a>
+			<div class="col-md-8">
+				{% for artist in artists %}
+					
+
+					{% if artist_id == artist.id %}
+						
+						<h2>{{artist.name}}</h2>
+
+						{% if artist.information %}
+							<p>{{artist.information}}</p>
+						{% endif %}
+
+
+						<div class="row">
+							{% if artist.url %}
+								<a href="{{artist.url}}" class="col-md-4 text-center" target="_blank">For more information, click here</a>
+							{% endif %}
+						
+							<p class="col-md-4 text-center"><a href="{{url_for('editArtist', artist_id = artist.id)}}">Edit this entry</a></p>
+							<p class="col-md-4 text-center"><a href="{{url_for('deleteArtist', artist_id = artist.id)}}">Delete this entry</a></p>
+						</div>
+					
 					{% endif %}
+				{% endfor %}
+
+				<hr>			
 				
-					<p class="col-md-4 text-center"><a href="{{url_for('editArtist', artist_id = artist.id)}}">Edit this entry</a></p>
-					<p class="col-md-4 text-center"><a href="{{url_for('deleteArtist', artist_id = artist.id)}}">Delete this entry</a></p>
+				<h2>Other Artists</h2>
+
+				<ul>
+					{%for artist in artists %}
+						{% if artist_id != artist.id %}
+						<li>
+							<a href="{{url_for('showArtists', artist_id = artist.id)}}">{{artist.name}}</a>
+						</li>
+						{% endif%}
+					{% endfor %}
+				</ul>
+				
+				<p><a href="{{url_for('addArtist')}}">Add a new artist</a></p>
+
+			</div>
+			
+			<div class="col-md-4">
+				<h4>Works</h4>
+
+				<div class="roW">
+				{% for picture in pictures %}
+					<div class="col-md-4">
+						<img class="img-responsive img-thumbnail" src="{{url_for('static', filename = 'images/'+ picture[2])}}" alt="A picture of the artwork, {{picture[0]}}, by {{picture[3]}}">
+						<a href="{{url_for('showArtworks', artwork_id = picture[1])}}">{{picture[0]}}</a>
+					</div>
+
+				{% endfor %}
 				</div>
-			{% endif %}
+			</div>
 
+		</div>
 
-		{% endfor %}
 		
 
-		<h2>Other Artists</h2>
-
-		<ul>
-			{%for artist in artists %}
-				{% if artist_id != artist.id %}
-				<li>
-					<a href="{{url_for('showArtists', artist_id = artist.id)}}">{{artist.name}}</a>
-				</li>
-				{% endif%}
-			{% endfor %}
-		</ul>
-		<p><a href="{{url_for('addArtist')}}">Add a new artist</a></p>
+		
 	</section>
+
 {% endblock %}

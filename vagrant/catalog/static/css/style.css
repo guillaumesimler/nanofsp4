@@ -79,3 +79,7 @@ header {
 .edit_new_v {
 	display: block;
 }
+
+.thumbnail-xs {
+	height: 15px;
+}
