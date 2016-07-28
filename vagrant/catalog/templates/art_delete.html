@@ -11,8 +11,8 @@
 	<br>
 	<br>
 
-	{%if nb > 0 %}
-		<h2> Caution: the following <b>{{nb}}</b> artwork(s) will be deleted as well </h2>
+	{%if nb[0] > 0 %}
+		<h2> Caution: the following <b>{{nb[0]}}</b> artwork(s) and the <b>{{nb[1]}}</b> related pictures will be deleted as well </h2>
 
 		<ul>
 			{% for artwork in artworks %}

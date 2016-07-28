@@ -389,12 +389,20 @@ def addArtist():
 def deleteArt(art_id):
     art = session.query(Art).filter_by(id = art_id).one()
     artworks = session.query(Artwork).filter_by(art_id = art_id).all()
-    nb = len(artworks)
+    pictures = session.query(Artwork.id, Picture.id, Picture.filename).filter_by(art_id = art_id).join(Picture).all()
+
+    nb = []
+    nb.append(len(artworks))
+    nb.append(len(pictures))
 
     if request.method == 'POST':
 
         for artwork in artworks:
             session.delete(artwork)
+
+        for picture in pictures:
+            pic = session.query(Picture).filter_by(id = picture[1]).one()
+            session.delete(pic)
             
         session.delete(art)
         session.commit()
