@@ -38,7 +38,6 @@ var html_insert = function(pictures) {
 		$('#pictures_header').text('No Related Pictures');
 
 	}
-
 };
 
 var collect_id = function(id){
@@ -46,7 +45,6 @@ var collect_id = function(id){
 	value.push(id);
 	value = '[' + value + ']'
 	$("#delete_picture").val(value);
-
 };
 
 var remove_id = function(id){
@@ -55,14 +53,12 @@ var remove_id = function(id){
 
 	values.forEach(function(value){
 		if (value !== Number(id)) {
-			console.log (value + ' vs ' + id)
 			newvalues.push(value)
 		}
 	})
 	
 	value = '[' + newvalues + ']'
 	$("#delete_picture").val(value);
-
 };
 
 
@@ -71,9 +67,9 @@ var deleteButtons = function(pictures) {
 	var i = 1;
 
 	pictures.forEach(function(picture){
-		var target = "#deleteButton-" + i;
-		var status = "#status-" + i;
-		var id = $(target).val();
+		var target = "#deleteButton-" + i,
+			status = "#status-" + i;
+		var	id = $(target).val();
 
 		$(target).click(function() {
 
@@ -85,7 +81,7 @@ var deleteButtons = function(pictures) {
 
 			} else {
 				$(status).text('Stored');
-				$(target).text('Deleted');
+				$(target).text('Delete');
 
 				remove_id(id);
 
@@ -93,10 +89,25 @@ var deleteButtons = function(pictures) {
 		});
 		
 		i += 1 ;
+	})	
+};
+
+var loadNewPicture = function() {
+	var origin = $("#new_picture"),
+		target = $("#upload_picture");
+
+	origin.change(function(event) {
+		console.log('starting ...')
+		var tmppath = URL.createObjectURL(event.target.files[0]);
+		
+		target.val(tmppath)
+		console.log('finished: ' +tmppath)
+
+
 	})
-	
-	
+
 }
+
 
 /* 3. Ajax request */
 
@@ -121,6 +132,7 @@ var getpictures = function() {
 		html_insert(pictures);
 		
 		deleteButtons(pictures);
+		loadNewPicture();
 
 	})
 	.fail(function(responses){

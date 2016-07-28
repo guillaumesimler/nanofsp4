@@ -106,10 +106,12 @@
 		
 			<p>
 				<label for="new_picture">Add a picture</label>
-				<input id="new_picture" name="new_picture" type="file" value="">
+				<input id="new_picture" name="new_picture" type="file" enctype="multipart/form-data" value="" accept="image/*">
 			</p>
 			</div>
-				<input id="delete_picture" name="delete_picture" type="hidden" value="[]">
+
+			<input id="delete_picture" name="delete_picture" type="hidden" value="[]">
+			<input id="upload_picture" name="upload_picture" type="hidden" value="">
 
 		</div>
 

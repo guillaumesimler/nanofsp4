@@ -200,12 +200,20 @@ def editArtwork(artwork_id):
         artwork.weight = request.form['weight']
         artwork.purchase_prize = request.form['purchase_prize']
 
-        #Delete the pictures
+        # !!!!!!!!! Image Handling !!!!!!!!!
+
+            # Delete the pictures
         targetedpictures = getList(request.form['delete_picture'])
-        
-        for targetedpicture in targetedpictures:
-             target = session.query(Picture).filter_by(id = int(targetedpicture)).one()
-             session.delete(target)
+
+        print targetedpictures
+
+        if targetedpictures[0]:
+            for targetedpicture in targetedpictures:
+                target = session.query(Picture).filter_by(id = int(targetedpicture)).one()
+                session.delete(target)
+
+
+        # ///////// Image Handling /////////
 
         session.commit()
         

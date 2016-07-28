@@ -1,7 +1,8 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
-	<div class = 'flash'>
+	<section class="container-fluid">
+		<div class = "flash col-md-12">
 		{% with messages = get_flashed_messages() %}
 			{% if messages %}
 		  
@@ -13,34 +14,37 @@
 
 			{% endif %}
 		{% endwith %}
-	</div>
+		</div>
+		<h2 class = "col-md-12">Discipline</h2>
+	</section>
 
-	<h2>Discipline</h2>
 	{% for art in arts %}
-		<article class="article_body">
-			<div class="article_left">
+		<article class="container-fluid">
+			<div class="col-md-8">
 				<h3><a href="{{url_for('showArts', art_id = art.id)}}">{{art.type}}</a></h3>
 				<p>
 					{{art.description}}
 				</p>
 			</div>
 
-			<div class="article_right">
+			<div class="col-md-4">
 				<img class="article_img" src="{{url_for('static', filename = 'images/' + pictures[loop.index0].filename)}}" alt ="A picture by {{pictures[loop.index0].photographer}}">
 			</div>
 		</article>	
 	{% endfor %}
 
 	<hr>
+ 	
+ 	<section class="container-fluid">
+		<h2>Artists</h2>
 
-	<h2>Artists</h2>
-
-	<ul>
+		<ul>
 		{%for artist in artists %}
 			<li>
 				<a href="{{url_for('showArtists', artist_id = artist.id)}}">{{artist.name}}</a>
 			</li>
 		{% endfor %}
-	</ul>
+		</ul>
+	</section>
 
 {% endblock %}
