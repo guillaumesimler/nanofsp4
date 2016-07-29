@@ -61,7 +61,7 @@ session = DBSession()
 # 3. Load Client Secret File (Google)
 
 CLIENT_ID = json.loads(
-open('client_secrets.json', 'r').read())['web']['client_id']
+open('login/google_secrets.json', 'r').read())['web']['client_id']
 
 
 """
@@ -76,6 +76,35 @@ def showLogin():
 
     return render_template('login.html', state = state)
 
+
+#2. google connect
+
+@app.route('/gconnect', methods=['POST'])
+def gconnect():
+
+    print "Google Auth starting ..."
+
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid server side token'), 401)
+        response.headers['Content-Type'] = 'application/json'
+
+        return response
+
+    code = request.data
+
+    try:
+        oauth_flow = flow_from_clientsecrets('login/google_secrets.json', scope='')
+        oauth_flow.redirect_uri = 'postmessage'
+        credentials = oauth_flow.step2_exchange(code)
+    except FlowExchangeError:
+        response = make_response(json.dumps('Failed to upgrade the auth code'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+
+    output = "<h1>Merci</h1>"
+
+    return output
 
 """
     IV. Main program
