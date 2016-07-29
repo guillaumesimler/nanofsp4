@@ -1,23 +1,27 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
+	<section class = "container">
+		<div class = "row">
+			<div class = "col-xs-12">
+				<h2>Edit the art discipline</h2>
 
-	<h2>Edit the art discipline</h2>
+				<form method="POST">
+					<label for="type">Name</label>
+					<br>
+					<input name="type" type="text" value="{{art.type}}">
 
-	<form method="POST">
-		<label for="type">Name</label>
-		<br>
-		<input name="type" type="text" value="{{art.type}}">
+					<br>
+					<label for="description">Description</label>
+					<br>
+					<textarea class="input_textarea" name="description">{{art.description}}</textarea>
 
-		<br>
-		<label for="description">Description</label>
-		<br>
-		<textarea class="input_textarea" name="description">{{art.description}}</textarea>
-
-		<br>
-		<input type="Submit">
-	</form>
-
+					<br>
+					<input type="Submit">
+				</form>
+			</div>
+		</div>
+	</section>
 
 
 {% endblock %}
