@@ -24,9 +24,9 @@ from flask import session as login_session
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, Art, Artist, Artwork, Picture, User 
+from database_setup import Base, Art, Artist, Artwork, Picture, User
 
-# 3. oauth2client: Manages the authorization &authentication processes 
+# 3. oauth2client: Manages the authorization &authentication processes
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -72,21 +72,24 @@ session = DBSession()
 # IV.1 JSON Gateways
 #
 # Enables the extraction of the data in JSON
-# Please read the discussion about main and secondary 
+# Please read the discussion about main and secondary
 # data in the README
 
-    # IV.1.1. Generic JSON requests
+# IV.1.1. Generic JSON requests
+
+
 @app.route('/art/JSON/')
 def json_arts():
     arts = session.query(Art).all()
-    return jsonify(arts = [art.serialize for art in arts])
+    return jsonify(arts=[art.serialize for art in arts])
 
     # IV.1.2. Specific JSON request
 
+
 @app.route('/artworks/<int:artwork_id>/pictures/JSON')
 def Json_pictures_specific(artwork_id):
-    pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
-    return jsonify(pictures = [picture.serialize for picture in pictures])
+    pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
+    return jsonify(pictures=[picture.serialize for picture in pictures])
 
 
 # IV.2. Display/read elements
@@ -98,39 +101,50 @@ def Json_pictures_specific(artwork_id):
 def showArtCatalog():
     # get data
     arts = session.query(Art).all()
-    pictures = session.query(Picture).all()
-    pictures = getFrontImage(pictures)
-    artists = session.query(Artist).all() 
+    pictures = getFrontImage(arts)
+    artists = session.query(Artist).all()
 
-    return render_template('catalog.html', arts = arts, pictures = pictures, artists = artists)
+    return render_template('catalog.html',
+                           arts=arts,
+                           pictures=pictures,
+                           artists=artists)
 
 
 @app.route('/art/<int:art_id>/')
 def showArts(art_id):
     arts = session.query(Art).all()
-    artworks = session.query(Artwork).filter_by(art_id = art_id).all()
+    artworks = session.query(Artwork).filter_by(art_id=art_id).all()
 
-    return render_template('arts.html', arts = arts, id = art_id, artworks = artworks)
+    return render_template('arts.html',
+                           arts=arts,
+                           id=art_id,
+                           artworks=artworks)
 
 
 @app.route('/artist/<int:artist_id>/')
 def showArtists(artist_id):
     artists = session.query(Artist).all()
 
-    pictures = session.query(Artwork.name.label('Name'), 
-                             Artwork.id.label('id'), 
-                             Picture.filename.label('filename'), 
+    pictures = session.query(Artwork.name.label('Name'),
+                             Artwork.id.label('id'),
+                             Picture.filename.label('filename'),
                              Picture.photographer.label('photographer')).filter(Artwork.artist_id == artist_id).join(Picture).all()
 
-    return render_template('artists.html', artists = artists, artist_id = artist_id, pictures = pictures)
+    return render_template('artists.html',
+                           artists=artists,
+                           artist_id=artist_id,
+                           pictures=pictures)
 
 
 @app.route('/artworks/<int:artwork_id>')
 def showArtworks(artwork_id):
-    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
-    pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
- 
-    return render_template('artworks.html', artwork = artwork, pictures = pictures, artwork_id = artwork_id)
+    artwork = session.query(Artwork).filter_by(id=artwork_id).one()
+    pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
+
+    return render_template('artworks.html',
+                           artwork=artwork,
+                           pictures=pictures,
+                           artwork_id=artwork_id)
 
 
 # IV.3 Edit/Update elements
@@ -139,7 +153,7 @@ def showArtworks(artwork_id):
 
 @app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
 def editArt(art_id):
-    art = session.query(Art).filter_by(id = art_id).one()
+    art = session.query(Art).filter_by(id=art_id).one()
 
     if request.method == 'POST':
         edited_type = request.form['type']
@@ -152,14 +166,14 @@ def editArt(art_id):
 
         message_update('art', edited_type)
 
-        return redirect(url_for('showArts', art_id = art_id))
-    else:      
-        return render_template('art_edit.html', art = art)
+        return redirect(url_for('showArts', art_id=art_id))
+    else:
+        return render_template('art_edit.html', art=art)
 
 
 @app.route('/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
 def editArtwork(artwork_id):
-    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
+    artwork = session.query(Artwork).filter_by(id=artwork_id).one()
 
     if request.method == 'POST':
 
@@ -170,15 +184,15 @@ def editArtwork(artwork_id):
             new_value = request.form['add_art']
 
             # Create the new art entry
-            new_Art = Art(type = new_value, user_id= 1 )
+            new_Art = Art(type=new_value, user_id=1)
             session.add(new_Art)
             session.commit()
 
             message_create('art', new_value)
-            
+
             # Get the new art id
 
-            new_art = session.query(Art).filter_by(type = new_value).one()
+            new_art = session.query(Art).filter_by(type=new_value).one()
             artwork.art_id = new_art.id
 
         # Enable the input of a new ARTIST
@@ -188,7 +202,7 @@ def editArtwork(artwork_id):
             new_value = request.form['add_artist']
 
             # Create the new art entry
-            new_Artist = Artist(name = new_value, user_id= 1 )
+            new_Artist = Artist(name=new_value, user_id=1)
             session.add(new_Artist)
             session.commit()
 
@@ -196,7 +210,7 @@ def editArtwork(artwork_id):
 
             # Get the new art id
 
-            new_artist = session.query(Artist).filter_by(name = new_value).one()
+            new_artist = session.query(Artist).filter_by(name=new_value).one()
             artwork.art_id = new_artist.id
 
         artwork.name = request.form['name']
@@ -208,35 +222,38 @@ def editArtwork(artwork_id):
 
         # !!!!!!!!! Image Handling !!!!!!!!!
 
-            # Delete the pictures
+        # Delete the pictures
         targetedpictures = getList(request.form['delete_picture'])
 
         print targetedpictures
 
         if targetedpictures[0]:
             for targetedpicture in targetedpictures:
-                target = session.query(Picture).filter_by(id = int(targetedpicture)).one()
+                target = session.query(Picture).filter_by(
+                    id=int(targetedpicture)).one()
                 session.delete(target)
-
 
         # ///////// Image Handling /////////
 
         session.commit()
-        
+
         message_update('artwork', artwork.name)
 
-        return redirect(url_for('showArtworks', artwork_id = artwork_id))
+        return redirect(url_for('showArtworks', artwork_id=artwork_id))
 
     else:
         arts = session.query(Art).all()
         artists = session.query(Artist).all()
 
-        return render_template('artwork_edit.html', artwork = artwork, arts = arts, artists = artists)
+        return render_template('artwork_edit.html',
+                               artwork=artwork,
+                               arts=arts,
+                               artists=artists)
 
 
 @app.route('/artists/<int:artist_id>/edit/', methods=['GET', 'POST'])
 def editArtist(artist_id):
-    artist = session.query(Artist).filter_by(id = artist_id).one()
+    artist = session.query(Artist).filter_by(id=artist_id).one()
 
     if request.method == 'POST':
         artist.name = request.form['name']
@@ -247,9 +264,9 @@ def editArtist(artist_id):
 
         message_update('artist', artist.name)
 
-        return redirect(url_for('showArtists', artist_id = artist_id))
-    else: 
-        return render_template('artist_edit.html', artist = artist)
+        return redirect(url_for('showArtists', artist_id=artist_id))
+    else:
+        return render_template('artist_edit.html', artist=artist)
 
 
 # IV.4 add elements
@@ -265,19 +282,19 @@ def addArt():
         new_type = request.form['type']
         new_description = request.form['description']
 
-        new_Art = Art(type = new_type, 
-                      description = new_description, 
-                      user_id = user)
+        new_Art = Art(type=new_type,
+                      description=new_description,
+                      user_id=user)
 
         session.add(new_Art)
         session.commit()
 
         message_create('art', new_type)
-        
-        new_id = session.query(Art).filter_by(type = new_type).one()
 
-        return redirect(url_for('showArts', art_id = new_id.id))
-    else:      
+        new_id = session.query(Art).filter_by(type=new_type).one()
+
+        return redirect(url_for('showArts', art_id=new_id.id))
+    else:
         return render_template('art_add.html')
 
 
@@ -293,7 +310,7 @@ def addArtwork():
             new_value = request.form['add_art']
 
             # Create the new art entry
-            new_Art = Art(type = new_value, user_id = user)
+            new_Art = Art(type=new_value, user_id=user)
             session.add(new_Art)
             session.commit()
 
@@ -301,7 +318,7 @@ def addArtwork():
 
             # Get the new art id
 
-            new_art = session.query(Art).filter_by(type = new_value).one()
+            new_art = session.query(Art).filter_by(type=new_value).one()
             new_art_id = new_art.id
 
         # Enable the input of a new ARTIST
@@ -311,15 +328,15 @@ def addArtwork():
             new_value = request.form['add_artist']
 
             # Create the new art entry
-            new_Artist = Artist(name = new_value, user_id = user)
+            new_Artist = Artist(name=new_value, user_id=user)
             session.add(new_Artist)
             session.commit()
 
             message_create('artist', new_value)
             # Get the new art id
 
-            new_artist = session.query(Artist).filter_by(name = new_value).one()
-            new_artist_id  = new_artist.id
+            new_artist = session.query(Artist).filter_by(name=new_value).one()
+            new_artist_id = new_artist.id
 
         # Get the other input fields
         new_name = request.form['name']
@@ -330,31 +347,31 @@ def addArtwork():
         new_purchase_prize = request.form['purchase_prize']
 
         # Create the new entry
-        new_artwork = Artwork(name = new_name,
-                              description = new_description, 
-                              purchase_year = new_purchase_year,
-                              size = new_size,
-                              weight = new_weight,
-                              purchase_prize = new_purchase_prize,
-                              user_id = user,
-                              art_id = new_art_id,
-                              artist_id = new_artist_id)
+        new_artwork = Artwork(name=new_name,
+                              description=new_description,
+                              purchase_year=new_purchase_year,
+                              size=new_size,
+                              weight=new_weight,
+                              purchase_prize=new_purchase_prize,
+                              user_id=user,
+                              art_id=new_art_id,
+                              artist_id=new_artist_id)
         session.add(new_artwork)
         session.commit()
 
         # Get the new id
 
-        new_artwork_id = session.query(Artwork).filter_by(name = new_name).one()
+        new_artwork_id = session.query(Artwork).filter_by(name=new_name).one()
 
         message_create('artworks', new_name)
 
-        return redirect(url_for('showArtworks', artwork_id = new_artwork_id.id))
+        return redirect(url_for('showArtworks', artwork_id=new_artwork_id.id))
 
     else:
         arts = session.query(Art).all()
         artists = session.query(Artist).all()
 
-        return render_template('artwork_add.html', arts = arts, artists = artists)
+        return render_template('artwork_add.html', arts=arts, artists=artists)
 
 
 @app.route('/artists/new/', methods=['GET', 'POST'])
@@ -366,19 +383,19 @@ def addArtist():
         new_information = request.form['information']
         new_url = request.form['url']
 
-        new_artist = Artist(name = new_name,
-                            information = new_information,
-                            url = new_url,
-                            user_id = user)
+        new_artist = Artist(name=new_name,
+                            information=new_information,
+                            url=new_url,
+                            user_id=user)
         session.add(new_artist)
         session.commit()
 
-        new_artist_id = session.query(Artist).filter_by(name = new_name).one()
+        new_artist_id = session.query(Artist).filter_by(name=new_name).one()
 
         message_create('artist', new_name)
 
-        return redirect(url_for('showArtists', artist_id = new_artist_id.id))
-    else: 
+        return redirect(url_for('showArtists', artist_id=new_artist_id.id))
+    else:
         return render_template('artist_add.html')
 
 
@@ -388,9 +405,10 @@ def addArtist():
 
 @app.route('/art/<int:art_id>/delete/', methods=['GET', 'POST'])
 def deleteArt(art_id):
-    art = session.query(Art).filter_by(id = art_id).one()
-    artworks = session.query(Artwork).filter_by(art_id = art_id).all()
-    pictures = session.query(Artwork.id, Picture.id, Picture.filename).filter_by(art_id = art_id).join(Picture).all()
+    art = session.query(Art).filter_by(id=art_id).one()
+    artworks = session.query(Artwork).filter_by(art_id=art_id).all()
+    pictures = session.query(Artwork.id, Picture.id, Picture.filename).filter_by(
+        art_id=art_id).join(Picture).all()
 
     nb = []
     nb.append(len(artworks))
@@ -402,22 +420,25 @@ def deleteArt(art_id):
             session.delete(artwork)
 
         for picture in pictures:
-            pic = session.query(Picture).filter_by(id = picture[1]).one()
+            pic = session.query(Picture).filter_by(id=picture[1]).one()
             session.delete(pic)
-            
+
         session.delete(art)
         session.commit()
-        
+
         message_delete('art', art.type)
         return redirect(url_for('showArtCatalog'))
-    else: 
-        return render_template('art_delete.html', art = art, artworks = artworks, nb = nb)
+    else:
+        return render_template('art_delete.html',
+                               art=art,
+                               artworks=artworks,
+                               nb=nb)
 
 
 @app.route('/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
 def deleteArtwork(artwork_id):
-    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
-    pictures = session.query(Picture).filter_by(artwork_id = artwork_id).all()
+    artwork = session.query(Artwork).filter_by(id=artwork_id).one()
+    pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
 
     nb = len(pictures)
 
@@ -425,27 +446,27 @@ def deleteArtwork(artwork_id):
 
         for picture in pictures:
             session.delete(picture)
-            
+
         session.delete(artwork)
         session.commit()
-        
+
         message_delete('artwort', artwork.name)
 
         return redirect(url_for('showArtCatalog'))
-    else: 
-        return render_template('artwork_delete.html', artwork = artwork, nb = nb)
+    else:
+        return render_template('artwork_delete.html', artwork=artwork, nb=nb)
 
 
 @app.route('/artists/<int:artist_id>/delete/', methods=['GET', 'POST'])
 def deleteArtist(artist_id):
-    artist = session.query(Artist).filter_by(id = artist_id).one() 
-    artworks = session.query(Artwork).filter_by(artist_id = artist_id).all()
-    pictures = session.query(Artwork.artist_id, Picture.id, Picture.filename).filter_by(artist_id = artist_id).join(Picture).all()
+    artist = session.query(Artist).filter_by(id=artist_id).one()
+    artworks = session.query(Artwork).filter_by(artist_id=artist_id).all()
+    pictures = session.query(Artwork.artist_id, Picture.id, Picture.filename).filter_by(
+        artist_id=artist_id).join(Picture).all()
 
     nb = []
     nb.append(len(artworks))
     nb.append(len(pictures))
-
 
     if request.method == 'POST':
 
@@ -453,46 +474,42 @@ def deleteArtist(artist_id):
             session.delete(artwork)
 
         for picture in pictures:
-            pic = session.query(Picture).filter_by(id = picture[1]).one()
+            pic = session.query(Picture).filter_by(id=picture[1]).one()
             session.delete(pic)
-            
+
         session.delete(artist)
         session.commit()
-        
+
         message_delete('artist', artist.name)
         return redirect(url_for('showArtCatalog'))
-    else: 
-        return render_template('artist_delete.html', artist = artist, artworks = artworks, nb = nb)
+    else:
+        return render_template('artist_delete.html', artist=artist, artworks=artworks, nb=nb)
 
 """
     V. Helper functions
 """
 
-def getFrontImage(list):
+
+def getFrontImage(arts):
     """
         Returns two random pictures from a list
     """
-    n = len(list) - 1
-
-    # Get number of the Elements
-    nb = session.query(Art).all()
-    nb = len(nb)
-
     result = []
 
-    r1 = random.randint(0, n)
+    for art in arts:
 
-    result.append(list[r1])
+        pictures = session.query(Picture, Artwork.art_id).filter(Artwork.art_id == art.id).join(Artwork).all()
+        
+        if pictures:
+            nb = len(pictures) - 1
+            target = random.randint(0, nb)
+            result.append(pictures[target].Picture)
 
-    # Make sur the second r2
-    for x in xrange(1, nb):
-        r2 = r1
-        while r2 == r1 and n > 0:
-            r2 = random.randint(0, n)
-
-        result.append(list[r2])
+        else:
+            result.append('blank')
 
     return result
+
 
 def message_update(type, value):
     """
@@ -501,9 +518,10 @@ def message_update(type, value):
             - type which could be: art, artwork, artist
             - value: the variable with the change
     """
-    message = "A new %s, %s, was successfully updated"  %(type, value)
+    message = "A new %s, %s, was successfully updated" % (type, value)
     print message
     flash(message)
+
 
 def message_create(type, value):
     """
@@ -512,10 +530,11 @@ def message_create(type, value):
             - type which could be: art, artwork, artist
             - value: the variable with the change
     """
-    
-    message = "The %s, %s, was successfully created" %(type, value)
+
+    message = "The %s, %s, was successfully created" % (type, value)
     print message
     flash(message)
+
 
 def message_delete(type, value):
     """
@@ -524,9 +543,11 @@ def message_delete(type, value):
             - type which could be: art, artwork, artist
             - value: the variable with the change
     """
-    message = "The %s, %s, and its child dependencies -if existing- were successfully deleted" %(type, value)
+    message = "The %s, %s, and its child dependencies -if existing- were successfully deleted" % (
+        type, value)
     print message
     flash(message)
+
 
 def getList(input):
     output = input.replace('[', '')
@@ -541,4 +562,4 @@ def getList(input):
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host = '0.0.0.0', port = 8000)
+    app.run(host='0.0.0.0', port=8000)

@@ -29,7 +29,9 @@
 				</div>
 
 				<div class="col-md-4">
-					<img class="img-responsive img-thumbnail catalog-img" src="{{url_for('static', filename = 'images/' + pictures[loop.index0].filename)}}" alt ="A picture by {{pictures[loop.index0].photographer}}">
+					{% if pictures[loop.index0] != 'blank' %}
+						<img class="img-responsive img-thumbnail catalog-img" src="{{url_for('static', filename = 'images/' + pictures[loop.index0].filename)}}" alt ="A picture by {{pictures[loop.index0].photographer}}">
+					{% endif %}
 				</div>
 			</article>	
 		{% endfor %}
