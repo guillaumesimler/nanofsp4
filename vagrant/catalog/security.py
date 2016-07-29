@@ -11,7 +11,8 @@
 """
 
 import bleach
-
+import random
+import string
 
 """
     II. Program
@@ -28,3 +29,13 @@ def escape(value):
     value = value.replace("'", "&#39;")
 
     return value
+
+def generate_token():
+
+    """
+        generate a tokken against man in the middle attacks
+    """
+
+    result = ''.join(random.choice(string.ascii_letters + string.digits) for x in xrange(32))
+
+    return result

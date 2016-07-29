@@ -41,7 +41,7 @@ import requests
 
 # 5. Security
 
-from security import escape
+from security import escape, generate_token
 
 """
     II. Initizalization
@@ -60,9 +60,21 @@ session = DBSession()
 
 # 3. Load Client Secret File (Google)
 
-# !!!! To be updated  once defined!!!!!
-#   CLIENT_ID = json.loads(
-#   open('client_secrets.json', 'r').read())['web']['client_id']
+CLIENT_ID = json.loads(
+open('client_secrets.json', 'r').read())['web']['client_id']
+
+
+"""
+    IV. login 
+"""
+# 1. get the login window
+
+@app.route('/login/')
+def showLogin():
+    state = generate_token()
+    login_session['state'] = state
+
+    return render_template('login.html', state = state)
 
 
 """
