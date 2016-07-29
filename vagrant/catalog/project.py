@@ -140,11 +140,13 @@ def showArtists(artist_id):
 def showArtworks(artwork_id):
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
+    artist = session.query(Artist).filter(Artwork.id == artwork_id).join(Artwork).one()
 
     return render_template('artworks.html',
                            artwork=artwork,
                            pictures=pictures,
-                           artwork_id=artwork_id)
+                           artwork_id=artwork_id,
+                           artist=artist)
 
 
 # IV.3 Edit/Update elements
