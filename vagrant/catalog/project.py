@@ -164,17 +164,22 @@ def gconnect():
     output = "<h1>Hello, %s</h1>" %login_session['username']
     output += "<h2>You're logged in and will be redirected ... </h2>"
 
-    print "Check 9"
-
     return output
 
 
 @app.route('/logout')
 def startLogout():
-    for element in login_session:
-        del element
+    del login_session['user_id']
+    del login_session['username'] 
+    del login_session['picture']
+    del login_session['email']
+    del login_session['gplus_id']
+    del login_session['credentials']
+    
+        
+    flash("You've been logged out")
 
-    return redirect(url_for('showLogin'))
+    return redirect(url_for('showArtCatalog'))
 
 
 """
@@ -219,18 +224,21 @@ def showArtCatalog():
     return render_template('catalog.html',
                            arts=arts,
                            pictures=pictures,
-                           artists=artists)
+                           artists=artists,
+                           login_session = login_session)
 
 
 @app.route('/art/<int:art_id>/')
 def showArts(art_id):
+
     arts = session.query(Art).all()
     artworks = session.query(Artwork).filter_by(art_id=art_id).all()
 
     return render_template('arts.html',
                            arts=arts,
                            id=art_id,
-                           artworks=artworks)
+                           artworks=artworks,
+                           login_session = login_session)
 
 
 @app.route('/artist/<int:artist_id>/')
@@ -245,7 +253,8 @@ def showArtists(artist_id):
     return render_template('artists.html',
                            artists=artists,
                            artist_id=artist_id,
-                           pictures=pictures)
+                           pictures=pictures,
+                           login_session = login_session)
 
 
 @app.route('/artworks/<int:artwork_id>')
@@ -258,7 +267,8 @@ def showArtworks(artwork_id):
                            artwork=artwork,
                            pictures=pictures,
                            artwork_id=artwork_id,
-                           artist=artist)
+                           artist=artist,
+                           login_session = login_session)
 
 
 # IV.3 Edit/Update elements
@@ -267,6 +277,9 @@ def showArtworks(artwork_id):
 
 @app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
 def editArt(art_id):
+    if not checkLogin():
+        return redirect(url_for('showArt', art_id = art_id)) 
+    
     art = session.query(Art).filter_by(id=art_id).one()
 
     if request.method == 'POST':
@@ -287,6 +300,9 @@ def editArt(art_id):
 
 @app.route('/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
 def editArtwork(artwork_id):
+    if not checkLogin():
+        return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
+    
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
 
     if request.method == 'POST':
@@ -367,6 +383,9 @@ def editArtwork(artwork_id):
 
 @app.route('/artists/<int:artist_id>/edit/', methods=['GET', 'POST'])
 def editArtist(artist_id):
+    if not checkLogin():
+        return redirect(url_for('showArtists', artist_id = artist_id)) 
+
     artist = session.query(Artist).filter_by(id=artist_id).one()
 
     if request.method == 'POST':
@@ -390,6 +409,9 @@ def editArtist(artist_id):
 @app.route('/art/new/', methods=['GET', 'POST'])
 def addArt():
     # Placeholder for the user
+    if not checkLogin():
+        return redirect(url_for('showArtCatalog')) 
+    
     user = 1
 
     if request.method == 'POST':
@@ -414,6 +436,8 @@ def addArt():
 
 @app.route('/artworks/new/', methods=['GET', 'POST'])
 def addArtwork():
+    if not checkLogin():
+        return redirect(url_for('showArtCatalog')) 
 
     if request.method == 'POST':
         user = 1
@@ -490,6 +514,9 @@ def addArtwork():
 
 @app.route('/artists/new/', methods=['GET', 'POST'])
 def addArtist():
+    if not checkLogin():
+        return redirect(url_for('showArtCatalog')) 
+
     user = 1
 
     if request.method == 'POST':
@@ -519,6 +546,11 @@ def addArtist():
 
 @app.route('/art/<int:art_id>/delete/', methods=['GET', 'POST'])
 def deleteArt(art_id):
+    if not checkLogin():
+        return redirect(url_for('showArts', art_id = art_id)) 
+        
+        
+
     art = session.query(Art).filter_by(id=art_id).one()
     artworks = session.query(Artwork).filter_by(art_id=art_id).all()
     pictures = session.query(Artwork.id, Picture.id, Picture.filename).filter_by(
@@ -551,6 +583,9 @@ def deleteArt(art_id):
 
 @app.route('/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
 def deleteArtwork(artwork_id):
+    if not checkLogin():
+        return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
+
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
 
@@ -573,6 +608,9 @@ def deleteArtwork(artwork_id):
 
 @app.route('/artists/<int:artist_id>/delete/', methods=['GET', 'POST'])
 def deleteArtist(artist_id):
+    if not checkLogin():
+        return redirect(url_for('showArtists', artist_id = artist_id)) 
+
     artist = session.query(Artist).filter_by(id=artist_id).one()
     artworks = session.query(Artwork).filter_by(artist_id=artist_id).all()
     pictures = session.query(Artwork.artist_id, Picture.id, Picture.filename).filter_by(
@@ -698,6 +736,19 @@ def createUser(login_session):
     retrieved_user = session.query(User).filter_by(email = login_session['email']).one()
     return retrieved_user.id
 
+def checkLogin():
+    try:
+        if login_session['userid'] != None:
+            print "login granted to %" %login_session['userid']
+            return True
+        else:
+            message = "Sorry, you lack the permission to do such an action. Please log in"
+            flash(message)
+            return False
+    except:
+        message = "Sorry, you lack the permission to do such an action. Please log in"
+        flash(message)
+        return False
 
 
 

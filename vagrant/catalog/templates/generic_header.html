@@ -32,10 +32,17 @@
 			</div>
 
 			<div class="col-md-6 text-right">
-				<a href="{{ url_for('showLogin')}}">Login</a>
-				<br>
-				<a href="{{ url_for('startLogout')}}">Logout</a>
-				<br>
+				{% if login_session and login_session['user_id'] %}
+					<p>
+						You're logged in as {{login_session['username']}}
+						<a href="{{ url_for('startLogout')}}">Logout</a>
+
+					</p>
+				{% else %}
+					<a href="{{ url_for('showLogin')}}">Login</a>
+					<br>
+				{% endif %}
+				
 				<a href="{{ url_for('showArtCatalog')}}">Back to main menu</a>
 			</div>
 		</div>
