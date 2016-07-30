@@ -61,7 +61,7 @@ session = DBSession()
 # 3. Load Client Secret File (Google)
 
 CLIENT_ID = json.loads(
-open('login/google_secrets.json', 'r').read())['web']['client_id']
+open('google_secrets.json', 'r').read())['web']['client_id']
 
 
 """
@@ -81,19 +81,19 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-
-    print "Google Auth starting ..."
-
+    print request.args.get('state')
+    print login_session['state']
+    # 1. Check for the server token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid server side token'), 401)
         response.headers['Content-Type'] = 'application/json'
-
         return response
 
-    code = request.data
 
+    # 2. Upgrade the client token
+    code = request.data
     try:
-        oauth_flow = flow_from_clientsecrets('login/google_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('google_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -101,10 +101,81 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+    # 3. Check the client token
+    access_token = credentials.access_token
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    h = httplib2.Http()
+    result = json.loads(h.request(url, 'GET')[1])
 
-    output = "<h1>Merci</h1>"
+    if result.get('error') is not None:
+        response = make_response(json.dumps(result.get('error')),500)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # 4. Check the name matching
+    gplus_id = credentials.id_token['sub']
+
+    if result['user_id'] != gplus_id:
+        response = make_response(json.dumps("Token's user ID issuer doesn't match the issuer"), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response   
+
+
+    # 5. Verify that the access token is valid for this app
+
+    if result['issued_to'] != CLIENT_ID:
+        response = make_response(json.dumps("Token's client ID doesn't match app's"), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    stored_credentials = login_session.get('credentials')
+    stored_gplus_id = login_session.get('gplus_id')
+
+
+    if stored_credentials is not None and gplus_id == stored_gplus_id:
+        response =  make_response(json.dumps('current user is already connected'), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+
+    # store the access token value and the user info
+
+    login_session['credentials'] = credentials.access_token
+    login_session['gplus_id'] = gplus_id
+
+    userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
+    params = {'access_token': credentials.access_token, 'alt': 'json'}
+    answer = requests.get(userinfo_url, params=params)
+    data = answer.json()
+
+    login_session['username'] = data['name']
+    login_session['picture'] = data['picture']
+    login_session['email'] = data['email']
+
+
+    # see if user exists, if it doesn't make a new one:
+    user_id = getUserID(login_session['email']) 
+    if not user_id:
+        user_id = createUser(login_session)
+
+    login_session['user_id']= user_id
+
+
+    output = "<h1>Hello, %s</h1>" %login_session['username']
+    output += "<h2>You're logged in and will be redirected ... </h2>"
+
+    print "Check 9"
 
     return output
+
+
+@app.route('/logout')
+def startLogout():
+    for element in login_session:
+        del element
+
+    return redirect(url_for('showLogin'))
+
 
 """
     IV. Main program
@@ -128,7 +199,7 @@ def json_arts():
 
 
 @app.route('/artworks/<int:artwork_id>/pictures/JSON')
-def Json_pictures_specific(artwork_id):
+def json_pictures_specific(artwork_id):
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
     return jsonify(pictures=[picture.serialize for picture in pictures])
 
@@ -592,12 +663,43 @@ def message_delete(type, value):
     flash(message)
 
 
+def message_failed_login():
+    """
+        sends a flash message
+    """
+    message = "Sorry, the login failed. Please try again" 
+    flash(message)
+
+
 def getList(input):
     output = input.replace('[', '')
     output = output.replace(']', '')
     output = output.replace(' ', '')
 
     return output.split(',')
+
+
+def getUserID(email):
+    try:
+        retrieved_user = session.query(User).filter_by(email = email).one()
+        return retrieved_user.id
+
+    except:
+        return None
+
+def createUser(login_session):
+    newUser = User(name = login_session['username'],
+                   email = login_session['email'],
+                   picture = login_session['picture'])
+
+    session.add(newUser)
+    session.commit()
+
+    retrieved_user = session.query(User).filter_by(email = login_session['email']).one()
+    return retrieved_user.id
+
+
+
 
 """
     VI. Webserver
