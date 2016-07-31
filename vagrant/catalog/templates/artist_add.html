@@ -1,30 +1,39 @@
 {% extends "generic_header.html" %}
 
 {% block content %}
+	<section class ="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-6">
+				<h2>Create a new artist fact sheet</h2>
 
-	<h2>Create a new artist fact sheet</h2>
+				<form method="POST">
+					<label for="name">Name</label>
+					<br>
+					<input class="col-xs-12" name="name" type="text">
+					<br>
+				
 
-	<form method="POST">
-		<label for="name">Name</label>
-		<br>
-		<input name="name" type="text">
-		<br>
-	
+					<br>
+					<label for="information">Information</label>
+					<br>
+					<textarea class="col-xs-12 input_textarea" name="information"></textarea>
 
-		<br>
-		<label for="information">Information</label>
-		<br>
-		<textarea class="input_textarea" name="information"></textarea>
+					<br>
+					<label for="url">more Information (url):</label>
+					<br>
+					<input class="col-xs-12" name="url" type="text">
+					<br>
+					<br>
 
-		<br>
-		<label for="url">more Information (url):</label>
-		<br>
-		<input class="input_url" name="url" type="text">
-		<br>
+					<div class = "row">
+						<span class="col-xs-6"><input type="Submit" value="Add"></span>			
+						<span class="col-xs-6 text-right"><button type="button"><a href="{{url_for('showArtCatalog')}}">Cancel</button></a></span>
+					</div>
 
-		<br>
-		<input type="Submit">
-	</form>
+				</form>
+			</div>
+		</div>
+	</section>
 
 
 

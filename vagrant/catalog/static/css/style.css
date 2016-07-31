@@ -65,13 +65,9 @@ header {
 /* Input: EDIT or CREATE*/
 
 .input_textarea {
-	width: 400px;
 	height: 250px;
 } 
 
-.input_url {
-	width: 400px;
-} 
 
 .edit_new_i {
 	display: none;
