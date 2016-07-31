@@ -81,8 +81,7 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    print request.args.get('state')
-    print login_session['state']
+
     # 1. Check for the server token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid server side token'), 401)
@@ -453,7 +452,7 @@ def addArtwork():
         # There is no risk of error as the existence of login_session['user_id']
         # was checked by checkLogin()
         user = login_session['user_id']
-        
+
         # Enable the input of a new ART Discipline
         if request.form['new_art'] == 'False':
             new_art_id = request.form['art_id']

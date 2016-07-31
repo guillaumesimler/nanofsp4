@@ -2,11 +2,15 @@
 
 Authors
 ----
-* an [important part of the backbone](https://github.com/udacity/fullstack-nanodegree-vm) was designed by the [udacity team](https://github.com/udacity/fullstack-nanodegree-vm/graphs/contributors) under the lead of [Lorenzo Brown](https://www.linkedin.com/in/lorenzobrown), this covers especially **the vagrant configuration as well as its internal setup**
+* an [important part of the backbone](https://github.com/udacity/fullstack-nanodegree-vm) was designed by the [udacity team](https://github.com/udacity/fullstack-nanodegree-vm/graphs/contributors) under the lead of [Lorenzo Brown](https://www.linkedin.com/in/lorenzobrown), this covers especially 
+	- **the vagrant configuration as well as its internal setup**
+	- the Google Oauth Setup
 
 
-* the **adaptation of the files** was done by **Guillaume Simler**, a Udacity Frontend Nanodegree graduate and Full Stack Web Developer Student, more information and contact details on my [Github profile](https://github.com/guillaumesimler)
+* the **design of the application** was done by **Guillaume Simler**, a Udacity Frontend Nanodegree graduate and Full Stack Web Developer Student, more information and contact details on my [Github profile](https://github.com/guillaumesimler)
 	- the setup of the database
+	- the backbone logic in python
+	- the front end
 
 Project description
 ----
