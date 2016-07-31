@@ -34,11 +34,11 @@
 
 						<div class="row">
 							{% if artist.url %}
-								<a href="{{artist.url}}" class="col-md-4 text-center" target="_blank">For more information, click here</a>
+								<span class="col-md-4 text-center"><a href="{{artist.url}}" target="_blank"><button>For more information, click here</button></a></span>
 							{% endif %}
 						
-							<p class="col-md-4 text-center"><a href="{{url_for('editArtist', artist_id = artist.id)}}">Edit this entry</a></p>
-							<p class="col-md-4 text-center"><a href="{{url_for('deleteArtist', artist_id = artist.id)}}">Delete this entry</a></p>
+							<p class="col-md-4 text-center"><a href="{{url_for('editArtist', artist_id = artist.id)}}"><button>Edit this entry</button></a></p>
+							<p class="col-md-4 text-center"><a href="{{url_for('deleteArtist', artist_id = artist.id)}}"><button>Delete this entry</button></a></p>
 						</div>
 					
 					{% endif %}
@@ -58,7 +58,7 @@
 					{% endfor %}
 				</ul>
 				
-				<p><a href="{{url_for('addArtist')}}">Add a new artist</a></p>
+				<p><a href="{{url_for('addArtist')}}"><button>Add a new artist</button></a></p>
 
 			</div>
 

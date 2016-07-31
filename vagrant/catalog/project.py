@@ -296,7 +296,9 @@ def editArt(art_id):
 
         return redirect(url_for('showArts', art_id=art_id))
     else:
-        return render_template('art_edit.html', art=art)
+        return render_template('art_edit.html', 
+                                art=art,
+                                login_session = login_session)
 
 
 @app.route('/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
@@ -382,7 +384,8 @@ def editArtwork(artwork_id):
         return render_template('artwork_edit.html',
                                artwork=artwork,
                                arts=arts,
-                               artists=artists)
+                               artists=artists,
+                               login_session = login_session)
 
 
 @app.route('/artists/<int:artist_id>/edit/', methods=['GET', 'POST'])
@@ -406,7 +409,9 @@ def editArtist(artist_id):
 
         return redirect(url_for('showArtists', artist_id=artist_id))
     else:
-        return render_template('artist_edit.html', artist=artist)
+        return render_template('artist_edit.html', 
+                               artist=artist,
+                               login_session = login_session)
 
 
 # IV.4 add elements
@@ -440,7 +445,8 @@ def addArt():
 
         return redirect(url_for('showArts', art_id=new_id.id))
     else:
-        return render_template('art_add.html')
+        return render_template('art_add.html',
+                               login_session = login_session)
 
 
 @app.route('/artworks/new/', methods=['GET', 'POST'])
@@ -521,7 +527,10 @@ def addArtwork():
         arts = session.query(Art).all()
         artists = session.query(Artist).all()
 
-        return render_template('artwork_add.html', arts=arts, artists=artists)
+        return render_template('artwork_add.html', 
+                               arts=arts, 
+                               artists=artists,
+                               login_session = login_session)
 
 
 @app.route('/artists/new/', methods=['GET', 'POST'])
@@ -551,7 +560,8 @@ def addArtist():
 
         return redirect(url_for('showArtists', artist_id=new_artist_id.id))
     else:
-        return render_template('artist_add.html')
+        return render_template('artist_add.html',
+                               login_session = login_session)
 
 
 # IV.5 delete elements
@@ -597,7 +607,8 @@ def deleteArt(art_id):
         return render_template('art_delete.html',
                                art=art,
                                artworks=artworks,
-                               nb=nb)
+                               nb=nb,
+                               login_session = login_session)
 
 
 @app.route('/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
@@ -625,7 +636,10 @@ def deleteArtwork(artwork_id):
 
         return redirect(url_for('showArtCatalog'))
     else:
-        return render_template('artwork_delete.html', artwork=artwork, nb=nb)
+        return render_template('artwork_delete.html', 
+                               artwork=artwork,
+                               nb=nb,
+                               login_session = login_session)
 
 
 @app.route('/artists/<int:artist_id>/delete/', methods=['GET', 'POST'])
@@ -660,7 +674,11 @@ def deleteArtist(artist_id):
         message_delete('artist', artist.name)
         return redirect(url_for('showArtCatalog'))
     else:
-        return render_template('artist_delete.html', artist=artist, artworks=artworks, nb=nb)
+        return render_template('artist_delete.html', 
+                               artist=artist, 
+                               artworks=artworks, 
+                               nb=nb,
+                               login_session = login_session)
 
 """
     V. Helper functions

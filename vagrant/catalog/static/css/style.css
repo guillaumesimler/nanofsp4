@@ -1,52 +1,18 @@
 body {
 	font-family: Helvetica, sans-serif;
+	background-color: #fff6e5;
 }
 
 header {
-	background-color: yellow;
+	background-color: #bfbdbd;
 }
 
 
 /* Front page*/
 
-.article_body {
-	display: flex;
-}
-
-.article_left {
-	width: 40% 
-}
 .catalog-img {
-	max-height: 30vh;
+	max-height: 20vh;
 	margin: 15px;
-}
-/* Items */
-
-.items_body {
-	display: flex;
-}
-.items_left {
-	width: 40%;
-	padding-right: 15px;
-}
-
-.items_right {
-	width: 60%;
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.items_description {
-	width : 45% ;
-	display: flex;
-	margin: 10px;
-}
-
-
-.items_thumbmail {
-	width: 80px;
-	height: 80px;
-	position: center;
 }
 
 /* Artworks */
