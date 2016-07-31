@@ -29,7 +29,7 @@
 				<br>
 				<input class="col-xs-12" name="size" type="text" value="{{artwork.size}}">
 				<br>
-				
+
 				<br>
 				<label for="weight">Weight (in kg - if suitable)</label>
 				<br>
@@ -59,12 +59,12 @@
 					<h4>Please add a new art discipline :</h4>
 
 					<input id="new_art" name="new_art" type="hidden" value='False'>
-					<label for="add_art">The name of this discipline</Label>			
+					<label for="add_art">The name of this discipline</Label>
 					<br>
 					<input class="col-xs-12" name="add_art" type="text">
 					<br>
-					<p>Please use the edit function of the artist page to add more information</p>	
-			
+					<p>Please use the edit function of the artist page to add more information</p>
+
 				</div>
 
 				<!-- End of optional value -->
@@ -88,12 +88,12 @@
 					<h4>Please add a new artist:</h4>
 
 					<input id="new_artist" name="new_artist" type="hidden" value='False'>
-					<label for="add_artist">The name of this new artist</Label>			
+					<label for="add_artist">The name of this new artist</Label>
 					<br>
 					<input class="col-xs-12" name="add_artist" type="text">
 					<br>
-					<p>Please use the edit function of the artist page to add more information</p>	
-			
+					<p>Please use the edit function of the artist page to add more information</p>
+
 				</div>
 			</div>
 
@@ -101,14 +101,14 @@
 				<h4 id="pictures_header">Related Pictures</h4>
 
 				<table id="pictures_list"></table>
-			
-			
+
+
 				<br>
-			
-				<p>
+
+<!-- 				<p>
 					<label for="new_picture">Add a picture</label>
 					<input id="new_picture" name="new_picture" type="file" enctype="multipart/form-data" value="" accept="image/*">
-				</p>
+				</p> -->
 			</div>
 
 			<input id="delete_picture" name="delete_picture" type="hidden" value="[]">
@@ -117,7 +117,7 @@
 		</div>
 
 		<br>
-		
+
 		<div class = "row">
 			<span class="col-xs-6 col-md-3"><input type="Submit" value="Edit"></span>
 			<span class="col-xs-6 col-md-3 text-right"><button type="button"><a href="{{url_for('showArtworks', artwork_id = artwork.id)}}">Cancel</button></a></span>

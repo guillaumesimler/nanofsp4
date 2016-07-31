@@ -1,8 +1,8 @@
-""" 
+"""
     Project.py
 
     * Programmed by Guillaume Simler
-    * Main program of this application: 
+    * Main program of this application:
         - the web server is set up
         - the methods (GET/POST) are defined
 
@@ -61,23 +61,24 @@ session = DBSession()
 # 3. Load Client Secret File (Google)
 
 CLIENT_ID = json.loads(
-open('google_secrets.json', 'r').read())['web']['client_id']
+    open('google_secrets.json', 'r').read())['web']['client_id']
 
 
 """
-    IV. login 
+    IV. login
 """
 # 1. get the login window
+
 
 @app.route('/login/')
 def showLogin():
     state = generate_token()
     login_session['state'] = state
 
-    return render_template('login.html', state = state)
+    return render_template('login.html', state=state)
 
 
-#2. google connect
+# 2. google connect
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -88,7 +89,6 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-
     # 2. Upgrade the client token
     code = request.data
     try:
@@ -96,18 +96,20 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the auth code'), 401)
+        response = make_response(
+            json.dumps('Failed to upgrade the auth code'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # 3. Check the client token
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    url = (
+        'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
 
     if result.get('error') is not None:
-        response = make_response(json.dumps(result.get('error')),500)
+        response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -115,27 +117,27 @@ def gconnect():
     gplus_id = credentials.id_token['sub']
 
     if result['user_id'] != gplus_id:
-        response = make_response(json.dumps("Token's user ID issuer doesn't match the issuer"), 401)
+        response = make_response(
+            json.dumps("Token's user ID issuer doesn't match the issuer"), 401)
         response.headers['Content-Type'] = 'application/json'
-        return response   
-
+        return response
 
     # 5. Verify that the access token is valid for this app
 
     if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps("Token's client ID doesn't match app's"), 401)
+        response = make_response(
+            json.dumps("Token's client ID doesn't match app's"), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
 
-
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response =  make_response(json.dumps('current user is already connected'), 200)
+        response = make_response(
+            json.dumps('current user is already connected'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
-
 
     # store the access token value and the user info
 
@@ -150,16 +152,14 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['email'] = data['email']
 
-
     # see if user exists, if it doesn't make a new one:
-    user_id = getUserID(login_session['email']) 
+    user_id = getUserID(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
 
-    login_session['user_id']= user_id
+    login_session['user_id'] = user_id
 
-
-    output = "<h1>Hello, %s</h1>" %login_session['username']
+    output = "<h1>Hello, %s</h1>" % login_session['username']
     output += "<h2>You're logged in and will be redirected ... </h2>"
 
     return output
@@ -168,12 +168,11 @@ def gconnect():
 @app.route('/logout')
 def startLogout():
     del login_session['user_id']
-    del login_session['username'] 
+    del login_session['username']
     del login_session['email']
     del login_session['gplus_id']
     del login_session['credentials']
-    
-        
+
     flash("You've been logged out")
 
     return redirect(url_for('showArtCatalog'))
@@ -197,10 +196,12 @@ def json_arts():
     arts = session.query(Art).all()
     return jsonify(arts=[art.serialize for art in arts])
 
+
 @app.route('/artists/JSON/')
 def json_artists():
     artists = session.query(Artist).all()
     return jsonify(artists=[artist.serialize for artist in artists])
+
 
 @app.route('/artworks/JSON/')
 def json_artworks():
@@ -208,19 +209,23 @@ def json_artworks():
     return jsonify(artworks=[artwork.serialize for artwork in artworks])
 
     # IV.1.2. Specific JSON request
+
+
 @app.route('/arts/<int:art_id>/JSON/')
 def json_arts_spe(art_id):
-    art = session.query(Art).filter_by(id = art_id).one()
+    art = session.query(Art).filter_by(id=art_id).one()
     return jsonify(art=[art.serialize])
 
+
 @app.route('/artists/<int:artist_id>/JSON/')
-def json_artists_spe(artwork_id):
-    artist = session.query(Artist).filter_by(id = artist_id).one()
+def json_artists_spe(artist_id):
+    artist = session.query(Artist).filter_by(id=artist_id).one()
     return jsonify(artists=[artist.serialize])
+
 
 @app.route('/artworks/<int:artwork_id>/JSON/')
 def json_artworks_spe(artwork_id):
-    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
+    artwork = session.query(Artwork).filter_by(id=artwork_id).one()
     return jsonify(artworks=[artwork.serialize])
 
 
@@ -246,7 +251,7 @@ def showArtCatalog():
                            arts=arts,
                            pictures=pictures,
                            artists=artists,
-                           login_session = login_session)
+                           login_session=login_session)
 
 
 @app.route('/art/<int:art_id>/')
@@ -259,7 +264,7 @@ def showArts(art_id):
                            arts=arts,
                            id=art_id,
                            artworks=artworks,
-                           login_session = login_session)
+                           login_session=login_session)
 
 
 @app.route('/artist/<int:artist_id>/')
@@ -275,21 +280,22 @@ def showArtists(artist_id):
                            artists=artists,
                            artist_id=artist_id,
                            pictures=pictures,
-                           login_session = login_session)
+                           login_session=login_session)
 
 
 @app.route('/artworks/<int:artwork_id>')
 def showArtworks(artwork_id):
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
-    artist = session.query(Artist).filter(Artwork.id == artwork_id).join(Artwork).one()
+    artist = session.query(Artist).filter(
+        Artwork.id == artwork_id).join(Artwork).one()
 
     return render_template('artworks.html',
                            artwork=artwork,
                            pictures=pictures,
                            artwork_id=artwork_id,
                            artist=artist,
-                           login_session = login_session)
+                           login_session=login_session)
 
 
 # IV.3 Edit/Update elements
@@ -299,10 +305,10 @@ def showArtworks(artwork_id):
 @app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
 def editArt(art_id):
     if not checkLogin():
-        return redirect(url_for('showArts', art_id = art_id)) 
-    
+        return redirect(url_for('showArts', art_id=art_id))
+
     if not checkUser(Art, art_id):
-        return redirect(url_for('showArts', art_id = art_id))     
+        return redirect(url_for('showArts', art_id=art_id))
 
     art = session.query(Art).filter_by(id=art_id).one()
 
@@ -319,22 +325,24 @@ def editArt(art_id):
 
         return redirect(url_for('showArts', art_id=art_id))
     else:
-        return render_template('art_edit.html', 
-                                art=art,
-                                login_session = login_session)
+        return render_template('art_edit.html',
+                               art=art,
+                               login_session=login_session)
 
 
 @app.route('/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
 def editArtwork(artwork_id):
     if not checkLogin():
-        return redirect(url_for('showArtworks', artwork_id = artwork_id))
+        return redirect(url_for('showArtworks', artwork_id=artwork_id))
 
     if not checkUser(Artwork, artwork_id):
-        return redirect(url_for('showArtworks', artwork_id = artwork_id))
-    
+        return redirect(url_for('showArtworks', artwork_id=artwork_id))
+
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
 
     if request.method == 'POST':
+
+        user = login_session['user_id']
 
         # Enable the input of a new ART Discipline
         if request.form['new_art'] == 'False':
@@ -343,7 +351,7 @@ def editArtwork(artwork_id):
             new_value = request.form['add_art']
 
             # Create the new art entry
-            new_Art = Art(type=new_value, user_id=1)
+            new_Art = Art(type=new_value, user_id=user)
             session.add(new_Art)
             session.commit()
 
@@ -361,7 +369,7 @@ def editArtwork(artwork_id):
             new_value = request.form['add_artist']
 
             # Create the new art entry
-            new_Artist = Artist(name=new_value, user_id=1)
+            new_Artist = Artist(name=new_value, user_id=user)
             session.add(new_Artist)
             session.commit()
 
@@ -408,16 +416,16 @@ def editArtwork(artwork_id):
                                artwork=artwork,
                                arts=arts,
                                artists=artists,
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 @app.route('/artists/<int:artist_id>/edit/', methods=['GET', 'POST'])
 def editArtist(artist_id):
     if not checkLogin():
-        return redirect(url_for('showArtists', artist_id = artist_id)) 
+        return redirect(url_for('showArtists', artist_id=artist_id))
 
     if not checkUser(Artist, artist_id):
-        return redirect(url_for('showArtists', artist_id = artist_id)) 
+        return redirect(url_for('showArtists', artist_id=artist_id))
 
     artist = session.query(Artist).filter_by(id=artist_id).one()
 
@@ -432,9 +440,9 @@ def editArtist(artist_id):
 
         return redirect(url_for('showArtists', artist_id=artist_id))
     else:
-        return render_template('artist_edit.html', 
+        return render_template('artist_edit.html',
                                artist=artist,
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 # IV.4 add elements
@@ -445,8 +453,8 @@ def editArtist(artist_id):
 def addArt():
     # Placeholder for the user
     if not checkLogin():
-        return redirect(url_for('showArtCatalog')) 
-    
+        return redirect(url_for('showArtCatalog'))
+
     # There is no risk of error as the existence of login_session['user_id']
     # was checked by checkLogin()
     user = login_session['user_id']
@@ -469,13 +477,13 @@ def addArt():
         return redirect(url_for('showArts', art_id=new_id.id))
     else:
         return render_template('art_add.html',
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 @app.route('/artworks/new/', methods=['GET', 'POST'])
 def addArtwork():
     if not checkLogin():
-        return redirect(url_for('showArtCatalog')) 
+        return redirect(url_for('showArtCatalog'))
 
     if request.method == 'POST':
         # There is no risk of error as the existence of login_session['user_id']
@@ -550,16 +558,16 @@ def addArtwork():
         arts = session.query(Art).all()
         artists = session.query(Artist).all()
 
-        return render_template('artwork_add.html', 
-                               arts=arts, 
+        return render_template('artwork_add.html',
+                               arts=arts,
                                artists=artists,
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 @app.route('/artists/new/', methods=['GET', 'POST'])
 def addArtist():
     if not checkLogin():
-        return redirect(url_for('showArtCatalog')) 
+        return redirect(url_for('showArtCatalog'))
 
     # There is no risk of error as the existence of login_session['user_id']
     # was checked by checkLogin()
@@ -584,7 +592,7 @@ def addArtist():
         return redirect(url_for('showArtists', artist_id=new_artist_id.id))
     else:
         return render_template('artist_add.html',
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 # IV.5 delete elements
@@ -596,12 +604,10 @@ def deleteArt(art_id):
 
     # Safety checks
     if not checkLogin():
-        return redirect(url_for('showArts', art_id = art_id))
+        return redirect(url_for('showArts', art_id=art_id))
 
     if not checkUser(Art, art_id):
-        return redirect(url_for('showArts', art_id = art_id))
-        
-        
+        return redirect(url_for('showArts', art_id=art_id))
 
     art = session.query(Art).filter_by(id=art_id).one()
     artworks = session.query(Artwork).filter_by(art_id=art_id).all()
@@ -631,16 +637,16 @@ def deleteArt(art_id):
                                art=art,
                                artworks=artworks,
                                nb=nb,
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 @app.route('/artworks/<int:artwork_id>/delete/', methods=['GET', 'POST'])
 def deleteArtwork(artwork_id):
     if not checkLogin():
-        return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
+        return redirect(url_for('showArtworks', artwork_id=artwork_id))
 
     if not checkUser(Artwork, artwork_id):
-        return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
+        return redirect(url_for('showArtworks', artwork_id=artwork_id))
 
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
@@ -659,19 +665,19 @@ def deleteArtwork(artwork_id):
 
         return redirect(url_for('showArtCatalog'))
     else:
-        return render_template('artwork_delete.html', 
+        return render_template('artwork_delete.html',
                                artwork=artwork,
                                nb=nb,
-                               login_session = login_session)
+                               login_session=login_session)
 
 
 @app.route('/artists/<int:artist_id>/delete/', methods=['GET', 'POST'])
 def deleteArtist(artist_id):
     if not checkLogin():
-        return redirect(url_for('showArtists', artist_id = artist_id))
+        return redirect(url_for('showArtists', artist_id=artist_id))
 
     if not checkUser(Artist, artist_id):
-        return redirect(url_for('showArtists', artist_id = artist_id))
+        return redirect(url_for('showArtists', artist_id=artist_id))
 
     artist = session.query(Artist).filter_by(id=artist_id).one()
     artworks = session.query(Artwork).filter_by(artist_id=artist_id).all()
@@ -697,11 +703,11 @@ def deleteArtist(artist_id):
         message_delete('artist', artist.name)
         return redirect(url_for('showArtCatalog'))
     else:
-        return render_template('artist_delete.html', 
-                               artist=artist, 
-                               artworks=artworks, 
+        return render_template('artist_delete.html',
+                               artist=artist,
+                               artworks=artworks,
                                nb=nb,
-                               login_session = login_session)
+                               login_session=login_session)
 
 """
     V. Helper functions
@@ -716,8 +722,9 @@ def getFrontImage(arts):
 
     for art in arts:
 
-        pictures = session.query(Picture, Artwork.art_id).filter(Artwork.art_id == art.id).join(Artwork).all()
-        
+        pictures = session.query(Picture, Artwork.art_id).filter(
+            Artwork.art_id == art.id).join(Artwork).all()
+
         if pictures:
             nb = len(pictures) - 1
             target = random.randint(0, nb)
@@ -771,7 +778,7 @@ def message_failed_login():
     """
         sends a flash message
     """
-    message = "Sorry, the login failed. Please try again" 
+    message = "Sorry, the login failed. Please try again"
     flash(message)
 
 
@@ -785,7 +792,7 @@ def getList(input):
 
 def getUserID(email):
     try:
-        retrieved_user = session.query(User).filter_by(email = email).one()
+        retrieved_user = session.query(User).filter_by(email=email).one()
         return retrieved_user.id
 
     except:
@@ -793,21 +800,22 @@ def getUserID(email):
 
 
 def createUser(login_session):
-    newUser = User(name = login_session['username'],
-                   email = login_session['email'])
+    newUser = User(name=login_session['username'],
+                   email=login_session['email'])
 
     session.add(newUser)
     session.commit()
 
-    retrieved_user = session.query(User).filter_by(email = login_session['email']).one()
+    retrieved_user = session.query(User).filter_by(
+        email=login_session['email']).one()
     return retrieved_user.id
 
 
 def checkLogin():
-    """ 
-        This function which checks whether 
+    """
+        This function which checks whether
             - the user is logged in -> returning True
-            - no user is logged in  -> returning False   
+            - no user is logged in  -> returning False
     """
     try:
         if login_session['user_id'] != None:
@@ -830,7 +838,7 @@ def checkUser(Class, id):
         This function search whether the user is allowed to modified an entry
     """
 
-    author = session.query(Class).filter_by(id = id).one().user_id
+    author = session.query(Class).filter_by(id=id).one().user_id
 
     # user_id = 1 is the admin which was created by the database population
     if login_session['user_id'] == 1:
@@ -843,8 +851,8 @@ def checkUser(Class, id):
     elif ((login_session['user_id'] == author) or (author == 1)):
         return True
 
-    else: 
-        message = "This post was created by another user. You can't modify it" 
+    else:
+        message = "This post was created by another user. You can't modify it"
         flash(message)
         return False
 
