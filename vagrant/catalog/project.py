@@ -193,16 +193,40 @@ def startLogout():
 # IV.1.1. Generic JSON requests
 
 
-@app.route('/art/JSON/')
+@app.route('/arts/JSON/')
 def json_arts():
     arts = session.query(Art).all()
     return jsonify(arts=[art.serialize for art in arts])
 
+@app.route('/artists/JSON/')
+def json_artists():
+    artists = session.query(Artist).all()
+    return jsonify(artists=[artist.serialize for artist in artists])
+
+@app.route('/artworks/JSON/')
+def json_artworks():
+    artworks = session.query(Artwork).all()
+    return jsonify(artworks=[artwork.serialize for artwork in artworks])
+
     # IV.1.2. Specific JSON request
+@app.route('/arts/<int:art_id>/JSON/')
+def json_arts_spe(art_id):
+    art = session.query(Art).filter_by(id = art_id).one()
+    return jsonify(art=[art.serialize])
+
+@app.route('/artists/<int:artist_id>/JSON/')
+def json_artists_spe(artwork_id):
+    artist = session.query(Artist).filter_by(id = artist_id).one()
+    return jsonify(artists=[artist.serialize])
+
+@app.route('/artworks/<int:artwork_id>/JSON/')
+def json_artworks_spe(artwork_id):
+    artwork = session.query(Artwork).filter_by(id = artwork_id).one()
+    return jsonify(artworks=[artwork.serialize])
 
 
 @app.route('/artworks/<int:artwork_id>/pictures/JSON')
-def json_pictures_specific(artwork_id):
+def json_pictures_spe(artwork_id):
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
     return jsonify(pictures=[picture.serialize for picture in pictures])
 
