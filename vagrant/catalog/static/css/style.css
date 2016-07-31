@@ -46,3 +46,8 @@ header {
 .thumbnail-align {
 	vertical-align: bottom;
 }
+
+.flash {
+	margin: 25px 0;
+	font-size: 16px;
+}

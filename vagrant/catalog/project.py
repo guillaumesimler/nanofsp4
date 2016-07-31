@@ -169,7 +169,6 @@ def gconnect():
 def startLogout():
     del login_session['user_id']
     del login_session['username'] 
-    del login_session['picture']
     del login_session['email']
     del login_session['gplus_id']
     del login_session['credentials']
