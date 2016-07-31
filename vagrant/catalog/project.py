@@ -278,7 +278,7 @@ def showArtworks(artwork_id):
 @app.route('/art/<int:art_id>/edit/', methods=['GET', 'POST'])
 def editArt(art_id):
     if not checkLogin():
-        return redirect(url_for('showArt', art_id = art_id)) 
+        return redirect(url_for('showArts', art_id = art_id)) 
     
     art = session.query(Art).filter_by(id=art_id).one()
 
@@ -737,15 +737,20 @@ def createUser(login_session):
     return retrieved_user.id
 
 def checkLogin():
+    for element in  login_session:
+        print  "%s : %s"  %(element, login_session[element])
+
     try:
-        if login_session['userid'] != None:
-            print "login granted to %" %login_session['userid']
+        if login_session['user_id'] != None:
+            print "login granted"
             return True
         else:
+            print "error 1"
             message = "Sorry, you lack the permission to do such an action. Please log in"
             flash(message)
             return False
     except:
+        print "error 2"
         message = "Sorry, you lack the permission to do such an action. Please log in"
         flash(message)
         return False
