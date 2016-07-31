@@ -149,7 +149,6 @@ def gconnect():
     data = answer.json()
 
     login_session['username'] = data['name']
-    login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
 
@@ -280,6 +279,9 @@ def editArt(art_id):
     if not checkLogin():
         return redirect(url_for('showArts', art_id = art_id)) 
     
+    if not checkUser(Art, art_id):
+        return redirect(url_for('showArts', art_id = art_id))     
+
     art = session.query(Art).filter_by(id=art_id).one()
 
     if request.method == 'POST':
@@ -301,7 +303,10 @@ def editArt(art_id):
 @app.route('/artworks/<int:artwork_id>/edit/', methods=['GET', 'POST'])
 def editArtwork(artwork_id):
     if not checkLogin():
-        return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
+        return redirect(url_for('showArtworks', artwork_id = artwork_id))
+
+    if not checkUser(Artwork, artwork_id):
+        return redirect(url_for('showArtworks', artwork_id = artwork_id))
     
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
 
@@ -386,6 +391,9 @@ def editArtist(artist_id):
     if not checkLogin():
         return redirect(url_for('showArtists', artist_id = artist_id)) 
 
+    if not checkUser(Artist, artist_id):
+        return redirect(url_for('showArtists', artist_id = artist_id)) 
+
     artist = session.query(Artist).filter_by(id=artist_id).one()
 
     if request.method == 'POST':
@@ -412,7 +420,9 @@ def addArt():
     if not checkLogin():
         return redirect(url_for('showArtCatalog')) 
     
-    user = 1
+    # There is no risk of error as the existence of login_session['user_id']
+    # was checked by checkLogin()
+    user = login_session['user_id']
 
     if request.method == 'POST':
         new_type = request.form['type']
@@ -440,7 +450,10 @@ def addArtwork():
         return redirect(url_for('showArtCatalog')) 
 
     if request.method == 'POST':
-        user = 1
+        # There is no risk of error as the existence of login_session['user_id']
+        # was checked by checkLogin()
+        user = login_session['user_id']
+        
         # Enable the input of a new ART Discipline
         if request.form['new_art'] == 'False':
             new_art_id = request.form['art_id']
@@ -517,7 +530,9 @@ def addArtist():
     if not checkLogin():
         return redirect(url_for('showArtCatalog')) 
 
-    user = 1
+    # There is no risk of error as the existence of login_session['user_id']
+    # was checked by checkLogin()
+    user = login_session['user_id']
 
     if request.method == 'POST':
         new_name = request.form['name']
@@ -546,8 +561,13 @@ def addArtist():
 
 @app.route('/art/<int:art_id>/delete/', methods=['GET', 'POST'])
 def deleteArt(art_id):
+
+    # Safety checks
     if not checkLogin():
-        return redirect(url_for('showArts', art_id = art_id)) 
+        return redirect(url_for('showArts', art_id = art_id))
+
+    if not checkUser(Art, art_id):
+        return redirect(url_for('showArts', art_id = art_id))
         
         
 
@@ -586,6 +606,9 @@ def deleteArtwork(artwork_id):
     if not checkLogin():
         return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
 
+    if not checkUser(Artwork, artwork_id):
+        return redirect(url_for('showArtworks', artwork_id = artwork_id)) 
+
     artwork = session.query(Artwork).filter_by(id=artwork_id).one()
     pictures = session.query(Picture).filter_by(artwork_id=artwork_id).all()
 
@@ -609,7 +632,10 @@ def deleteArtwork(artwork_id):
 @app.route('/artists/<int:artist_id>/delete/', methods=['GET', 'POST'])
 def deleteArtist(artist_id):
     if not checkLogin():
-        return redirect(url_for('showArtists', artist_id = artist_id)) 
+        return redirect(url_for('showArtists', artist_id = artist_id))
+
+    if not checkUser(Artist, artist_id):
+        return redirect(url_for('showArtists', artist_id = artist_id))
 
     artist = session.query(Artist).filter_by(id=artist_id).one()
     artworks = session.query(Artwork).filter_by(artist_id=artist_id).all()
@@ -725,10 +751,10 @@ def getUserID(email):
     except:
         return None
 
+
 def createUser(login_session):
     newUser = User(name = login_session['username'],
-                   email = login_session['email'],
-                   picture = login_session['picture'])
+                   email = login_session['email'])
 
     session.add(newUser)
     session.commit()
@@ -736,25 +762,51 @@ def createUser(login_session):
     retrieved_user = session.query(User).filter_by(email = login_session['email']).one()
     return retrieved_user.id
 
-def checkLogin():
-    for element in  login_session:
-        print  "%s : %s"  %(element, login_session[element])
 
+def checkLogin():
+    """ 
+        This function which checks whether 
+            - the user is logged in -> returning True
+            - no user is logged in  -> returning False   
+    """
     try:
         if login_session['user_id'] != None:
             print "login granted"
             return True
         else:
-            print "error 1"
+            print "login failed (error 1)"
             message = "Sorry, you lack the permission to do such an action. Please log in"
             flash(message)
             return False
     except:
-        print "error 2"
+        print "login failed (error 2)"
         message = "Sorry, you lack the permission to do such an action. Please log in"
         flash(message)
         return False
 
+
+def checkUser(Class, id):
+    """
+        This function search whether the user is allowed to modified an entry
+    """
+
+    author = session.query(Class).filter_by(id = id).one().user_id
+
+    # user_id = 1 is the admin which was created by the database population
+    if login_session['user_id'] == 1:
+        message = "You're logged in as admin, aka godlike user. You can modify every entry"
+        flash(message)
+        return True
+
+    # for training purpose, a logged in user can modify an entry done by the admin
+    # would be deleted later on.
+    elif ((login_session['user_id'] == author) or (author == 1)):
+        return True
+
+    else: 
+        message = "This post was created by another user. You can't modify it" 
+        flash(message)
+        return False
 
 
 """
