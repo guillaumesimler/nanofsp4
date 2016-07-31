@@ -2,7 +2,7 @@
 
 Authors
 ----
-* an [important part of the backbone](https://github.com/udacity/fullstack-nanodegree-vm) was designed by the [udacity team](https://github.com/udacity/fullstack-nanodegree-vm/graphs/contributors) under the lead of [Lorenzo Brown](https://www.linkedin.com/in/lorenzobrown), this covers especially 
+* an [important part of the backbone](https://github.com/udacity/fullstack-nanodegree-vm) was designed by the [udacity team](https://github.com/udacity/fullstack-nanodegree-vm/graphs/contributors) under the lead of [Lorenzo Brown](https://www.linkedin.com/in/lorenzobrown), this covers especially
 	- **the vagrant configuration as well as its internal setup**
 	- the Google Oauth Setup
 
@@ -24,6 +24,30 @@ Discussion
 ----
 A lot of the modifications were discussed in [Github](https://github.com/guillaumesimler/nanofsp4/issues?utf8=%E2%9C%93&q=)
 
+#### What should ...
+
+##### ... come in and will be worked on (a separate branch)
+
+* A **second oauth** [(Linkedin?)](https://developer.linkedin.com/docs/oauth2#!)#
+* A **local oauth** server
+* Getting an picture for the artworks displayed in arts
+
+##### ... come in but requires (your, aka the reviewer's) help
+
+* Getting the files upload for the picture. I tried with
+	- a classic form, but failed due to browser security (__\fakepath\__)
+	- with blobs, but would need to deepen my reseach (as they disappeared when I loaded the POST request)
+
+##### ... come in, but won't
+
+* a better responsiveness
+* modals for the pictures
+
+#### How are thinks JSONified?
+
+The specific JSON accesses don't retrieve **all** data but only the **main** data, e.g. the artwork will
+* retrieve the selected artworks
+* not the related pictures
 
 Ressources
 ----
@@ -35,21 +59,11 @@ The app uses the following ressources:
 	- [SQLalchemy](http://www.sqlalchemy.org/) managing the database
 	- [SQLite](https://www.sqlite.org/) the database used there
 	- [oauth2client](https://github.com/google/oauth2client), the library enabling the use of [Oauth2](http://oauth.net/2/)
-	- Helper modules, such as [random](https://docs.python.org/2/library/random.html), [string](https://docs.python.org/2/library/string.html), [json](https://docs.python.org/2.7/library/json.html), 
+	- Helper modules, such as [random](https://docs.python.org/2/library/random.html), [string](https://docs.python.org/2/library/string.html), [json](https://docs.python.org/2.7/library/json.html),
 	- HTTP helper modules, such as [Requests](http://docs.python-requests.org/en/master/) and [httplib2](https://pypi.python.org/pypi/httplib2)
 * **Frontend**
 	- [Jquery](https://jquery.com/)
 	- [Bootstrap](http://getbootstrap.com/)
-
-
-
-Data structure
-----
-
-#### Database
-
-
-#### Tables
 
 
 How to use
