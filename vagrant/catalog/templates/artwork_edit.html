@@ -2,49 +2,50 @@
 
 {% block content %}
 <div class="container">
+
 	<h2>Edit the artwork: {{artwork.name}}</h2>
 
 	<form method="POST">
-		<div class="container">
-			<div class="col-md-6">
+		<div class="row">
+			<div class="col-xs-12 col-md-6">
 				<label for="name">Name</label>
 				<br>
-				<input name="name" type="text" value="{{artwork.name}}">
+				<input class="col-xs-12" name="name" type="text" value="{{artwork.name}}">
 
 				<br>
 				<label for="description">Description</label>
 				<br>
-				<textarea class="input_textarea" name="description">{{artwork.description}}</textarea>
+				<textarea class="col-xs-12 input_textarea" name="description">{{artwork.description}}</textarea>
 				<br>
 
 				<br>
 				<label for="purchase_year">Year of purchase</label>
 				<br>
-				<input name="purchase_year" type="text" value="{{artwork.purchase_year}}">
+				<input class="col-xs-12" name="purchase_year" type="text" value="{{artwork.purchase_year}}">
 				<br>
 
 				<br>
 				<label for="size">Size (width & heigth & depth - if suitable)</label>
 				<br>
-				<input name="size" type="text" value="{{artwork.size}}">
+				<input class="col-xs-12" name="size" type="text" value="{{artwork.size}}">
 				<br>
 				
 				<br>
 				<label for="weight">Weight (in kg - if suitable)</label>
 				<br>
-				<input name="weight" type="text" value="{{artwork.weight}}">
+				<input class="col-xs-12" name="weight" type="text" value="{{artwork.weight}}">
 				<br>
 
 				<br>
 				<label for="purchase_prize">Purchase prize</label>
 				<br>
-				<input name="purchase_prize" type="text" value="{{artwork.purchase_prize}}">
+				<input class="col-xs-12" name="purchase_prize" type="text" value="{{artwork.purchase_prize}}">
 				<br>
 
 				<br>
 				<label for="art_id">Discipline:</label>
 				<br>
-				<select id="select_art" name="art_id">
+				<select class="col-xs-6" id="select_art" name="art_id">
 					{% for art in arts %}
 						<option value="{{art.id}}" {% if artwork.art_id == art.id%} selected="selected" {% endif%}>{{art.type}}</option>
 					{% endfor %}
@@ -60,7 +61,7 @@
 					<input id="new_art" name="new_art" type="hidden" value='False'>
 					<label for="add_art">The name of this discipline</Label>			
 					<br>
-					<input name="add_art" type="text">
+					<input class="col-xs-12" name="add_art" type="text">
 					<br>
 					<p>Please use the edit function of the artist page to add more information</p>	
 			
@@ -71,7 +72,7 @@
 				<br>
 				<label for="artist_id">Artist:</label>
 				<br>
-				<select id="select_artist" name="artist_id">
+				<select class="col-xs-6" id="select_artist" name="artist_id">
 					{% for artist in artists %}
 						<option value="{{artist.id}}" {% if artwork.artist_id == artist.id%} selected="selected" {% endif%}>{{artist.name}}</option>
 					{% endfor %}
@@ -89,7 +90,7 @@
 					<input id="new_artist" name="new_artist" type="hidden" value='False'>
 					<label for="add_artist">The name of this new artist</Label>			
 					<br>
-					<input name="add_artist" type="text">
+					<input class="col-xs-12" name="add_artist" type="text">
 					<br>
 					<p>Please use the edit function of the artist page to add more information</p>	
 			
@@ -102,12 +103,12 @@
 				<table id="pictures_list"></table>
 			
 			
-			<br>
-		
-			<p>
-				<label for="new_picture">Add a picture</label>
-				<input id="new_picture" name="new_picture" type="file" enctype="multipart/form-data" value="" accept="image/*">
-			</p>
+				<br>
+			
+				<p>
+					<label for="new_picture">Add a picture</label>
+					<input id="new_picture" name="new_picture" type="file" enctype="multipart/form-data" value="" accept="image/*">
+				</p>
 			</div>
 
 			<input id="delete_picture" name="delete_picture" type="hidden" value="[]">
@@ -116,11 +117,13 @@
 		</div>
 
 		<br>
-		<input type="Submit">
+		
+		<div class = "row">
+			<span class="col-xs-6 col-md-3"><input type="Submit" value="Edit"></span>
+			<span class="col-xs-6 col-md-3 text-right"><button type="button"><a href="{{url_for('showArtworks', artwork_id = artwork.id)}}">Cancel</button></a></span>
+		</div>
 
 	</form>
-
-	
 </div>
 
 <!-- Add Scripting -->

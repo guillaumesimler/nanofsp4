@@ -4,13 +4,13 @@
 	<section class="container">
 		<div class="row">
 			<div class ="col-xs-12">
+				<h2>Are you sure you want to delete the following entry about <em>{{artist.name}}</em> ?</h2>
+				<h3>This action can not be undone !</h3>
+				
 				<form method="POST">
-					<h1>Are you sure you want to delete the following entry about {{artist.name}} ?</h1>
-					<h3>This action can not be undone !</h3>
-
 					<div class = "row">
 						<span class="col-xs-3"><input type="Submit" value="Delete"></span>			
-						<span class="col-xs-3 text-right"><button type="button"><a href="{{url_for('showArtists', artist_id = artist.id)}}">Cancel</button></a></span>
+						<span class="col-xs-3 text-right"><button type="button"><a href="{{url_for('showArtists', artist_id = artist.id)}}">Cancel</a></button></span>
 					</div>
 				</form>
 
